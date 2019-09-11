@@ -124,7 +124,6 @@ namespace SwingCardBoard
             //billDate.DefaultCellStyle.Font = font;
             creditAmount.DefaultCellStyle.Font = font;
             swingAmount.DefaultCellStyle.Font = font;
-            swingDetails.DefaultCellStyle.Font = font;
 
             avaliableAmount.DefaultCellStyle.Font = font;
             avaliableAmount.DefaultCellStyle.ForeColor = Color.Green;
@@ -135,6 +134,7 @@ namespace SwingCardBoard
             norepayAmount.DefaultCellStyle.Font = font;
             norepayAmount.DefaultCellStyle.ForeColor = Color.Red;
 
+            // 禁止排序
             for (int i = 0; i < m_accountStatisticsDgv.Columns.Count; i++)
             {
                 m_accountStatisticsDgv.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -166,7 +166,7 @@ namespace SwingCardBoard
             row.CreateCells(m_accountStatisticsDgv);
 
             row.Cells[0].Value = account.Name;
-            row.Cells[1].Value = account.BillStartDay + "/" + account.BillExpiredDay;
+            row.Cells[1].Value = account.BillStartDay + " - " + account.BillExpiredDay;
             row.Cells[2].Value = account.CreditAmount.ToString();
 
             SetAcountAmount(account, row);
@@ -191,21 +191,20 @@ namespace SwingCardBoard
             row.Cells[5].Value = account.RepayAmount.ToString();
             row.Cells[6].Value = account.NoRepayAmount.ToString();
             row.Cells[7].Value = account.SwingAmount.ToString();
-            row.Cells[8].Value = account.ReservedAmount.ToString();
 
             // 已还清
             if (account.NoRepayAmount - 0.0 <= 0.000001)
             {
-                row.Cells[9].Value = "（本期已还清）";
-                row.Cells[9].Style.ForeColor = Color.Green;
+                row.Cells[8].Value = "本期已还清";
+                row.Cells[8].Style.ForeColor = Color.Green;
             }
             else
             {
-                row.Cells[9].Value = "（本期尚未还清）";
-                row.Cells[9].Style.ForeColor = Color.Red;
+                row.Cells[8].Value = "本期尚未还清";
+                row.Cells[8].Style.ForeColor = Color.Red;
             }
 
-            row.Cells[10].Value = account.LastDateTime;
+            row.Cells[9].Value = account.LastDateTime;
         }
 
         private void UpdateAccountStatistics(string name)
@@ -258,6 +257,42 @@ namespace SwingCardBoard
             row.Cells[7].Value = account.SwingAmount.ToString();
             row.Cells[7].Style.Font = font;
         }
+
+        // 鼠标放到刷卡明细单元格时显示当期所有刷卡明细
+        private void m_accountStatisticsDgv_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 7 && e.RowIndex >= 0 && e.RowIndex != m_totalRowIndex)
+            {
+                var row = m_accountStatisticsDgv.Rows[e.RowIndex];
+                string accountName = row.Cells[0].Value.ToString();
+
+                var account = AccountBook.GetInstance().FindAccount(accountName);
+                if (account.SwingEvents.Count != 0)
+                {
+                    row.Cells[e.ColumnIndex].ToolTipText = GenerateTipString(account.SwingEvents);
+                }
+            }
+        }
+
+        private string GenerateTipString(List<FundEvent> events)
+        {
+            string tip = "刷卡明细：\r\n";
+            tip += "--------------------------------------\r\n";
+
+            double total = 0.0;
+            int times = 0;
+            foreach (var eve in events)
+            {
+                tip += (++times).ToString() + "  " + eve.DateTime + ": " + eve.Amount.ToString() + "元\r\n";
+                total += eve.Amount;
+            }
+
+            tip += "--------------------------------------\r\n";
+            tip += "总计:                            " + total.ToString() + "元";
+
+            return tip;
+        }
+
         # endregion
     }
 }

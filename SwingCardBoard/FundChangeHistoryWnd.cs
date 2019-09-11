@@ -47,7 +47,16 @@ namespace SwingCardBoard
                 {
                     AddFundChangeGroup(eve.Account);
                 }
+
+                SaveToAccountCurrentSwingEvents(eve);
             }
+        }
+
+        void SaveToAccountCurrentSwingEvents(FundEvent eve)
+        {
+            var account = AccountBook.GetInstance().FindAccount(eve.Account);
+            if (account != null && eve.Type == "刷卡")
+                account.SwingEvents.Add(eve);
         }
 
         ListViewGroup AddFundChangeGroup(string account)
@@ -75,24 +84,25 @@ namespace SwingCardBoard
         public void AddFundChangeEvent(FundEvent eve)
         {
             AddFundChangeEventToListView(eve);
+            SaveToAccountCurrentSwingEvents(eve);
             m_fundEventDB.AddNewFundEvent(eve);
         }
 
         void AddFundChangeEventToListView(FundEvent eve)
         {
+            var group = FindAccountGroup(eve.Account);
+            if (group == null)
+                group = AddFundChangeGroup(eve.Account);
+
             ListViewItem row = new ListViewItem();
 
-            row.Text = (m_fundChangeLV.Items.Count + 1).ToString();
+            row.Text = (group.Items.Count + 1).ToString();
             row.SubItems.Add(eve.Account);
             row.SubItems.Add(eve.Type);
             row.SubItems.Add(eve.Amount.ToString());
             row.SubItems.Add(eve.DateTime);
 
-            var group = FindAccountGroup(eve.Account);
-            if (group == null)
-                group = AddFundChangeGroup(eve.Account);
             group.Items.Add(row);
-
             m_fundChangeLV.Items.Add(row);
         }
         #endregion

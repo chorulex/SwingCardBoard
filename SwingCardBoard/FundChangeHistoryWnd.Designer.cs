@@ -39,26 +39,27 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "银行卡/账号";
-            this.columnHeader1.Width = 150;
+            this.columnHeader1.Width = 140;
             // 
             // columnHeader2
             // 
             this.columnHeader2.Text = "资金变动类型";
-            this.columnHeader2.Width = 120;
+            this.columnHeader2.Width = 100;
             // 
             // columnHeader3
             // 
             this.columnHeader3.Text = "资金变动金额";
-            this.columnHeader3.Width = 120;
+            this.columnHeader3.Width = 100;
             // 
             // columnHeader4
             // 
             this.columnHeader4.Text = "操作日期时间";
-            this.columnHeader4.Width = 200;
+            this.columnHeader4.Width = 180;
             // 
             // columnHeader5
             // 
             this.columnHeader5.Text = "序号";
+            this.columnHeader5.Width = 50;
             // 
             // m_fundChangeLV
             // 
@@ -74,7 +75,7 @@
             this.m_fundChangeLV.FullRowSelect = true;
             this.m_fundChangeLV.Location = new System.Drawing.Point(12, 12);
             this.m_fundChangeLV.Name = "m_fundChangeLV";
-            this.m_fundChangeLV.Size = new System.Drawing.Size(699, 629);
+            this.m_fundChangeLV.Size = new System.Drawing.Size(578, 629);
             this.m_fundChangeLV.TabIndex = 7;
             this.m_fundChangeLV.UseCompatibleStateImageBehavior = false;
             this.m_fundChangeLV.View = System.Windows.Forms.View.Details;
@@ -83,7 +84,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(724, 653);
+            this.ClientSize = new System.Drawing.Size(602, 653);
             this.Controls.Add(this.m_fundChangeLV);
             this.Name = "FundChangeHistoryWnd";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

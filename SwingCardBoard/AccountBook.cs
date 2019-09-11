@@ -7,6 +7,16 @@ namespace SwingCardBoard
 {
     public class Account
     {
+        /// <summary>
+        /// 当期所有刷卡记录
+        /// </summary>
+        private List<FundEvent> m_swingEvents = new List<FundEvent>();
+        public List<FundEvent> SwingEvents
+        {
+            get { return m_swingEvents; }
+            set { m_swingEvents = value; }
+        }
+
         private string m_lastDateTime;
         public string LastDateTime
         {
