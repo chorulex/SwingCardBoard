@@ -12,6 +12,7 @@ namespace SwingCardBoard
     public partial class MainWnd : Form
     {
         private CurrentAccountStatus m_accountStatDB = new CurrentAccountStatus();
+        private FundChangeHistoryWnd m_fundEventWnd = null;
 
         public MainWnd()
         {
@@ -26,15 +27,16 @@ namespace SwingCardBoard
         private void Init()
         {
             SetCurrentTime();
+            InitAccountStatistics(); 
 
-            m_accountStatDB.Load();
-            InitAccountStatistics();
+            m_fundEventWnd = new FundChangeHistoryWnd();
+            m_fundEventWnd.Hide();
         }
 
         private void SetCurrentTime()
         {
             var currentDate = DateTime.Now.ToLocalTime().Date;
-            m_dateLab.Text = currentDate.Year + "年" + currentDate.Month + "月";
+            m_dateLab.Text = currentDate.Year + "年" + currentDate.Month + "月" + currentDate.Day + "日";
         }
 
         // 记录一笔刷卡记录
@@ -50,6 +52,13 @@ namespace SwingCardBoard
                 account.ReservedAmount = eventWnd.Amount;
 
                 UpdateAccountStatistics(account);
+
+                FundEvent eve = new FundEvent();
+                eve.Account = account.Name;
+                eve.Type = "刷卡";
+                eve.Amount = eventWnd.Amount;
+                eve.DateTime = account.LastDateTime;
+                m_fundEventWnd.AddFundChangeEvent(eve);
             }
         }
 
@@ -63,6 +72,13 @@ namespace SwingCardBoard
                 account.AddRepay(eventWnd.Amount);
 
                 UpdateAccountStatistics(account);
+
+                FundEvent eve = new FundEvent();
+                eve.Account = account.Name;
+                eve.Type = "还款";
+                eve.Amount = eventWnd.Amount;
+                eve.DateTime = account.LastDateTime;
+                m_fundEventWnd.AddFundChangeEvent(eve);
             }
         }
 
@@ -87,13 +103,50 @@ namespace SwingCardBoard
             }
         }
 
+        private void cardManageBtn_Click(object sender, EventArgs e)
+        {
+            AccountManageWnd wnd = new AccountManageWnd(this);
+            wnd.ShowDialog();
+        }
+
+        private void m_showFundChangeEventsBtn_Click(object sender, EventArgs e)
+        {
+            m_fundEventWnd.Show();
+        }
+
         # region 当期账号状态记录
+        private int m_totalRowIndex = -1;
         private void InitAccountStatistics()
         {
+            m_accountStatDB.Load();
+
+            var font = new Font("微软雅黑", 9.5f, FontStyle.Regular);
+            //billDate.DefaultCellStyle.Font = font;
+            creditAmount.DefaultCellStyle.Font = font;
+            swingAmount.DefaultCellStyle.Font = font;
+            swingDetails.DefaultCellStyle.Font = font;
+
+            avaliableAmount.DefaultCellStyle.Font = font;
+            avaliableAmount.DefaultCellStyle.ForeColor = Color.Green;
+            billAmount.DefaultCellStyle.Font = font;
+            billAmount.DefaultCellStyle.ForeColor = Color.Red;
+            repayAmount.DefaultCellStyle.Font = font;
+            repayAmount.DefaultCellStyle.ForeColor = Color.Green;
+            norepayAmount.DefaultCellStyle.Font = font;
+            norepayAmount.DefaultCellStyle.ForeColor = Color.Red;
+
+            for (int i = 0; i < m_accountStatisticsDgv.Columns.Count; i++)
+            {
+                m_accountStatisticsDgv.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+
+            // 
             foreach (var account in AccountBook.GetInstance().GetAccounts())
             {
                 AddAccountStatistics(account);
             }
+
+            InitTotalAccount();
         }
 
         private int GetAccountRow(string account)
@@ -109,34 +162,30 @@ namespace SwingCardBoard
 
         public void AddAccountStatistics(Account account)
         {
-            int index = m_accountStatisticsDgv.Rows.Add();
-            var row = m_accountStatisticsDgv.Rows[index];
+            DataGridViewRow row = new DataGridViewRow();
+            row.CreateCells(m_accountStatisticsDgv);
 
             row.Cells[0].Value = account.Name;
             row.Cells[1].Value = account.BillStartDay + "/" + account.BillExpiredDay;
             row.Cells[2].Value = account.CreditAmount.ToString();
 
             SetAcountAmount(account, row);
+
+            if (m_totalRowIndex != -1)
+            {
+                m_accountStatisticsDgv.Rows.Insert(m_accountStatisticsDgv.Rows.Count - 1, row);
+                m_totalRowIndex++;
+            }
+            else
+            {
+                m_accountStatisticsDgv.Rows.Add(row);
+            }
+
             m_accountStatDB.Update();
         }
 
         private void SetAcountAmount(Account account, DataGridViewRow row)
         {
-            var font = new Font("宋体", 9.5f, FontStyle.Bold);
-            //billDate.DefaultCellStyle.Font = font;
-            creditAmount.DefaultCellStyle.Font = font;
-            swingAmount.DefaultCellStyle.Font = font;
-            swingDetails.DefaultCellStyle.Font = font;
-
-            avaliableAmount.DefaultCellStyle.Font = font;
-            avaliableAmount.DefaultCellStyle.ForeColor = Color.Green;
-            billAmount.DefaultCellStyle.Font = font;
-            billAmount.DefaultCellStyle.ForeColor = Color.Red;
-            repayAmount.DefaultCellStyle.Font = font;
-            repayAmount.DefaultCellStyle.ForeColor = Color.Green;
-            norepayAmount.DefaultCellStyle.Font = font;
-            norepayAmount.DefaultCellStyle.ForeColor = Color.Red;
-
             row.Cells[3].Value = account.AvaliableAmount.ToString();
             row.Cells[4].Value = account.BillAmount.ToString();
             row.Cells[5].Value = account.RepayAmount.ToString();
@@ -171,7 +220,43 @@ namespace SwingCardBoard
             var row = m_accountStatisticsDgv.Rows[index];
 
             SetAcountAmount(account, row);
+            UpdateTotalAccountStatistics();
+
             m_accountStatDB.Update();
+        }
+
+        // 用于更新总计栏
+        private void InitTotalAccount()
+        {
+            m_totalRowIndex = m_accountStatisticsDgv.Rows.Add();
+            SetTotalAccountAmount();
+        }
+
+        private void UpdateTotalAccountStatistics()
+        {
+            AccountBook.GetInstance().UpdateTotalAccount();
+            SetTotalAccountAmount();
+        }
+
+        private void SetTotalAccountAmount()
+        {
+            var font = new Font("微软雅黑", 11f, FontStyle.Bold);
+
+            var row = m_accountStatisticsDgv.Rows[m_totalRowIndex];
+            var account = AccountBook.GetInstance().TotalAccount;
+
+            row.Cells[0].Value = account.Name;
+            row.Cells[0].Style.Font = font;
+            row.Cells[3].Value = account.AvaliableAmount.ToString();
+            row.Cells[3].Style.Font = font;
+            row.Cells[4].Value = account.BillAmount.ToString();
+            row.Cells[4].Style.Font = font;
+            row.Cells[5].Value = account.RepayAmount.ToString();
+            row.Cells[5].Style.Font = font;
+            row.Cells[6].Value = account.NoRepayAmount.ToString();
+            row.Cells[6].Style.Font = font;
+            row.Cells[7].Value = account.SwingAmount.ToString();
+            row.Cells[7].Style.Font = font;
         }
         # endregion
     }

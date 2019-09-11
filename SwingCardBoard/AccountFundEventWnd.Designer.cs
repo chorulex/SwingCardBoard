@@ -41,11 +41,14 @@
             this.label5 = new System.Windows.Forms.Label();
             this.m_noRepayAmountTxt = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.m_avaliableAmountTxt = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // m_applyBtn
             // 
-            this.m_applyBtn.Location = new System.Drawing.Point(189, 163);
+            this.m_applyBtn.Location = new System.Drawing.Point(189, 204);
             this.m_applyBtn.Name = "m_applyBtn";
             this.m_applyBtn.Size = new System.Drawing.Size(75, 23);
             this.m_applyBtn.TabIndex = 0;
@@ -82,7 +85,7 @@
             // 
             // m_cancelBtn
             // 
-            this.m_cancelBtn.Location = new System.Drawing.Point(289, 163);
+            this.m_cancelBtn.Location = new System.Drawing.Point(289, 204);
             this.m_cancelBtn.Name = "m_cancelBtn";
             this.m_cancelBtn.Size = new System.Drawing.Size(75, 23);
             this.m_cancelBtn.TabIndex = 4;
@@ -101,7 +104,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(64, 134);
+            this.label3.Location = new System.Drawing.Point(64, 175);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 12);
             this.label3.TabIndex = 6;
@@ -109,7 +112,7 @@
             // 
             // m_amoutTxt
             // 
-            this.m_amoutTxt.Location = new System.Drawing.Point(111, 131);
+            this.m_amoutTxt.Location = new System.Drawing.Point(111, 172);
             this.m_amoutTxt.Name = "m_amoutTxt";
             this.m_amoutTxt.Size = new System.Drawing.Size(103, 21);
             this.m_amoutTxt.TabIndex = 7;
@@ -117,7 +120,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(223, 136);
+            this.label4.Location = new System.Drawing.Point(223, 177);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(41, 12);
             this.label4.TabIndex = 8;
@@ -136,7 +139,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(40, 100);
+            this.label5.Location = new System.Drawing.Point(40, 143);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(65, 12);
             this.label5.TabIndex = 10;
@@ -146,7 +149,7 @@
             // 
             this.m_noRepayAmountTxt.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.m_noRepayAmountTxt.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.m_noRepayAmountTxt.Location = new System.Drawing.Point(111, 97);
+            this.m_noRepayAmountTxt.Location = new System.Drawing.Point(111, 137);
             this.m_noRepayAmountTxt.Name = "m_noRepayAmountTxt";
             this.m_noRepayAmountTxt.ReadOnly = true;
             this.m_noRepayAmountTxt.Size = new System.Drawing.Size(103, 26);
@@ -155,20 +158,51 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(223, 102);
+            this.label6.Location = new System.Drawing.Point(223, 143);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(41, 12);
             this.label6.TabIndex = 8;
             this.label6.Text = "（元）";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(223, 105);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(41, 12);
+            this.label7.TabIndex = 8;
+            this.label7.Text = "（元）";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(40, 103);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(65, 12);
+            this.label8.TabIndex = 10;
+            this.label8.Text = "可用额度：";
+            // 
+            // m_avaliableAmountTxt
+            // 
+            this.m_avaliableAmountTxt.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.m_avaliableAmountTxt.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.m_avaliableAmountTxt.Location = new System.Drawing.Point(111, 98);
+            this.m_avaliableAmountTxt.Name = "m_avaliableAmountTxt";
+            this.m_avaliableAmountTxt.ReadOnly = true;
+            this.m_avaliableAmountTxt.Size = new System.Drawing.Size(103, 26);
+            this.m_avaliableAmountTxt.TabIndex = 11;
+            // 
             // AccountFundEventWnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(539, 198);
+            this.ClientSize = new System.Drawing.Size(539, 240);
+            this.Controls.Add(this.m_avaliableAmountTxt);
             this.Controls.Add(this.m_noRepayAmountTxt);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.addCardLab);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.m_amoutTxt);
@@ -205,5 +239,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox m_noRepayAmountTxt;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox m_avaliableAmountTxt;
     }
 }

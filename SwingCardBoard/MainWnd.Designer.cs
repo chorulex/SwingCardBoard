@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.takeSwingBtn = new System.Windows.Forms.Button();
-            this.addCardBtn = new System.Windows.Forms.Button();
             this.cardManageBtn = new System.Windows.Forms.Button();
             this.m_accountStatisticsDgv = new System.Windows.Forms.DataGridView();
             this.account = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,6 +45,7 @@
             this.m_dateLab = new System.Windows.Forms.Label();
             this.m_setBillBtn = new System.Windows.Forms.Button();
             this.m_repayBtn = new System.Windows.Forms.Button();
+            this.m_showFundChangeEventsBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.m_accountStatisticsDgv)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,16 +59,6 @@
             this.takeSwingBtn.UseVisualStyleBackColor = true;
             this.takeSwingBtn.Click += new System.EventHandler(this.takeNoteBtn_Click);
             // 
-            // addCardBtn
-            // 
-            this.addCardBtn.Location = new System.Drawing.Point(312, 12);
-            this.addCardBtn.Name = "addCardBtn";
-            this.addCardBtn.Size = new System.Drawing.Size(146, 23);
-            this.addCardBtn.TabIndex = 1;
-            this.addCardBtn.Text = "添加银行卡或者账号";
-            this.addCardBtn.UseVisualStyleBackColor = true;
-            this.addCardBtn.Click += new System.EventHandler(this.addCardBtn_Click);
-            // 
             // cardManageBtn
             // 
             this.cardManageBtn.Location = new System.Drawing.Point(12, 12);
@@ -77,6 +67,7 @@
             this.cardManageBtn.TabIndex = 2;
             this.cardManageBtn.Text = "卡片/账号管理";
             this.cardManageBtn.UseVisualStyleBackColor = true;
+            this.cardManageBtn.Click += new System.EventHandler(this.cardManageBtn_Click);
             // 
             // m_accountStatisticsDgv
             // 
@@ -102,7 +93,7 @@
             this.m_accountStatisticsDgv.ReadOnly = true;
             this.m_accountStatisticsDgv.RowHeadersVisible = false;
             this.m_accountStatisticsDgv.RowTemplate.Height = 23;
-            this.m_accountStatisticsDgv.Size = new System.Drawing.Size(1055, 417);
+            this.m_accountStatisticsDgv.Size = new System.Drawing.Size(1055, 406);
             this.m_accountStatisticsDgv.TabIndex = 3;
             // 
             // account
@@ -187,11 +178,11 @@
             this.m_dateLab.AutoSize = true;
             this.m_dateLab.Font = new System.Drawing.Font("SimSun", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.m_dateLab.ForeColor = System.Drawing.Color.Green;
-            this.m_dateLab.Location = new System.Drawing.Point(471, 72);
+            this.m_dateLab.Location = new System.Drawing.Point(483, 72);
             this.m_dateLab.Name = "m_dateLab";
-            this.m_dateLab.Size = new System.Drawing.Size(87, 16);
+            this.m_dateLab.Size = new System.Drawing.Size(113, 16);
             this.m_dateLab.TabIndex = 4;
-            this.m_dateLab.Text = "1970年1月";
+            this.m_dateLab.Text = "1970年1月1日";
             // 
             // m_setBillBtn
             // 
@@ -213,17 +204,27 @@
             this.m_repayBtn.UseVisualStyleBackColor = true;
             this.m_repayBtn.Click += new System.EventHandler(this.m_repayBtn_Click);
             // 
+            // m_showFundChangeEventsBtn
+            // 
+            this.m_showFundChangeEventsBtn.Location = new System.Drawing.Point(171, 12);
+            this.m_showFundChangeEventsBtn.Name = "m_showFundChangeEventsBtn";
+            this.m_showFundChangeEventsBtn.Size = new System.Drawing.Size(168, 23);
+            this.m_showFundChangeEventsBtn.TabIndex = 7;
+            this.m_showFundChangeEventsBtn.Text = "查看资金变动历史记录";
+            this.m_showFundChangeEventsBtn.UseVisualStyleBackColor = true;
+            this.m_showFundChangeEventsBtn.Click += new System.EventHandler(this.m_showFundChangeEventsBtn_Click);
+            // 
             // MainWnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1078, 585);
+            this.ClientSize = new System.Drawing.Size(1078, 522);
+            this.Controls.Add(this.m_showFundChangeEventsBtn);
             this.Controls.Add(this.m_repayBtn);
             this.Controls.Add(this.m_setBillBtn);
             this.Controls.Add(this.m_dateLab);
             this.Controls.Add(this.m_accountStatisticsDgv);
             this.Controls.Add(this.cardManageBtn);
-            this.Controls.Add(this.addCardBtn);
             this.Controls.Add(this.takeSwingBtn);
             this.Name = "MainWnd";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -238,7 +239,6 @@
         #endregion
 
         private System.Windows.Forms.Button takeSwingBtn;
-        private System.Windows.Forms.Button addCardBtn;
         private System.Windows.Forms.Button cardManageBtn;
         private System.Windows.Forms.DataGridView m_accountStatisticsDgv;
         private System.Windows.Forms.Label m_dateLab;
@@ -255,6 +255,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn swingDetails;
         private System.Windows.Forms.DataGridViewTextBoxColumn stat;
         private System.Windows.Forms.DataGridViewTextBoxColumn lastEventDT;
+        private System.Windows.Forms.Button m_showFundChangeEventsBtn;
     }
 }
 

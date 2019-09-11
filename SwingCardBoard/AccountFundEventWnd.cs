@@ -68,6 +68,7 @@ namespace SwingCardBoard
             m_cardNumTxt.Text = account.Number;
 
             m_noRepayAmountTxt.Text = account.NoRepayAmount.ToString();
+            m_avaliableAmountTxt.Text = account.AvaliableAmount.ToString();
         }
 
         private void m_cardComb_SelectedIndexChanged(object sender, EventArgs e)
