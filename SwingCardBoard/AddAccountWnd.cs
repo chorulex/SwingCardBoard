@@ -33,6 +33,12 @@ namespace SwingCardBoard
             Account account = new Account();
 
             account.Name = cardNameTxt.Text.Trim();
+            if (string.IsNullOrEmpty(account.Name))
+            {
+                MessageBox.Show(this, "请输入账户名称！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             account.Number = numberTxt.Text.Trim();
             account.ExpiredDate = expiredDT.Value.ToShortDateString();
             account.BillStartDay = int.Parse(billStartDayNUD.Value.ToString());

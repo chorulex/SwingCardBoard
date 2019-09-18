@@ -11,6 +11,12 @@ namespace SwingCardBoard
     {
         readonly string m_fileName = @"data\account_status.csv";
 
+        public void Clean()
+        {
+            if (File.Exists(m_fileName))
+                File.Delete(m_fileName);
+        }
+
         public void Load()
         {
             if (!File.Exists(m_fileName))

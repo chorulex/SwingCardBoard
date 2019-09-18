@@ -62,6 +62,12 @@ namespace SwingCardBoard
     {
         readonly string m_fileName = @"data\fund_change_history.csv";
 
+        public void Clean()
+        {
+            if (File.Exists(m_fileName))
+                File.Delete(m_fileName);
+        }
+
         public List<FundEvent> Load()
         {
             List<FundEvent> events = new List<FundEvent>();

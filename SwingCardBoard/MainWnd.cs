@@ -31,6 +31,8 @@ namespace SwingCardBoard
                 Directory.CreateDirectory(@"data\");
 
             SetCurrentTime();
+
+            m_accountStatDB.Load();
             InitAccountStatistics(); 
 
             m_fundEventWnd = new FundChangeHistoryWnd();
@@ -84,12 +86,27 @@ namespace SwingCardBoard
             AddAccountStatistics(addWnd.NewAccount);
         }
 
+        public void Reset()
+        {
+            ResetDGV();
+
+            // history
+            m_accountStatDB.Clean();
+            m_fundEventWnd.Clean();
+        }
+
         # region 当期账号状态记录
         private int m_totalRowIndex = -1;
+
+        private void ResetDGV()
+        {
+            m_totalRowIndex = -1;
+            m_accountStatisticsDgv.Rows.Clear();
+            InitAccountStatistics();
+        }
+
         private void InitAccountStatistics()
         {
-            m_accountStatDB.Load();
-
             var font = new Font("微软雅黑", 9f, FontStyle.Regular);
             //billDate.DefaultCellStyle.Font = font;
             creditAmount.DefaultCellStyle.Font = font;
@@ -214,7 +231,7 @@ namespace SwingCardBoard
 
         private void SetTotalAccountAmount()
         {
-            var font = new Font("微软雅黑", 10f, FontStyle.Bold);
+            var font = new Font("微软雅黑", 9.5f, FontStyle.Bold);
 
             var row = m_accountStatisticsDgv.Rows[m_totalRowIndex];
             var account = AccountBook.GetInstance().TotalAccount;

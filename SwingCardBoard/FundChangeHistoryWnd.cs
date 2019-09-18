@@ -18,6 +18,13 @@ namespace SwingCardBoard
             InitFundChangeEventView();
         }
 
+        public void Clean()
+        {
+            m_fundEventDB.Clean();
+            m_accountGroup.Clear();
+            m_fundChangeLV.Clear();
+        }
+
         #region 资金变动事件表
         HistoryFundEventDB m_fundEventDB = new HistoryFundEventDB();
         Dictionary<string, ListViewGroup> m_accountGroup = new Dictionary<string, ListViewGroup>();

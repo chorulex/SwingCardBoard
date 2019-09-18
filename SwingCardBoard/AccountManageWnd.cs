@@ -69,5 +69,21 @@ namespace SwingCardBoard
             DialogResult = DialogResult.OK;
             this.Close();
         }
+
+        private void m_cleanBtn_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.Yes == MessageBox.Show(this, "该操作会删除所有数据包括历史操作记录，删除后不可恢复！\r\n你确定清空吗？", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+            {
+                CleanAccounts();
+            }
+        }
+
+        private void CleanAccounts()
+        {
+            AccountBook.GetInstance().RemoveAll();
+
+            m_accountListDGV.Rows.Clear();
+            m_mainwnd.Reset();
+        }
     }
 }

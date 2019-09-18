@@ -179,6 +179,12 @@ namespace SwingCardBoard
             set { m_totalAccount = value; }
         }
 
+        public void RemoveAll()
+        {
+            m_acounts.Clear();
+            UpdateTotalAccount();
+        }
+
         public List<Account> GetAccounts()
         {
             return m_acounts.Values.ToList();
@@ -215,6 +221,9 @@ namespace SwingCardBoard
 
         public Account FindAccount(string name)
         {
+            if (!ExistAccount(name))
+                return null;
+
             return m_acounts[name];
         }
 
