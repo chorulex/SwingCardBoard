@@ -11,8 +11,8 @@ namespace SwingCardBoard
 {
     public partial class SetAccountBillWnd : Form
     {
-        private string m_account = null;
-        public string GetAccount()
+        private Account m_account = null;
+        public Account GetAccount()
         {
             return m_account;
         }
@@ -65,7 +65,7 @@ namespace SwingCardBoard
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, "请输入一个有效的金额！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "请输入一个有效的账单金额！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -76,7 +76,7 @@ namespace SwingCardBoard
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, "请输入一个有效的金额！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "请输入一个有效的可用额度！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -87,10 +87,10 @@ namespace SwingCardBoard
                 return;
             }
 
-            account.LastDateTime = DateTime.Now.ToLocalTime().ToString();
+            account.LastDateTime = Utility.GetCurrentDTString();
             account.AvaliableAmount = avaliable;
             account.SetBillAmount(bill);
-            m_account = name;
+            m_account = account;
 
             DialogResult = DialogResult.OK;
             this.Close();
@@ -114,6 +114,28 @@ namespace SwingCardBoard
 
             m_mainWnd.AddAccountStatistics(addWnd.NewAccount);
             InitAccountList();
+        }
+
+        private void m_avaliableAmountTxt_TextChanged(object sender, EventArgs e)
+        {
+            m_avaliableAmountTxt.Text = Utility.FormatDoubleString(Utility.ConvertToOrigin(m_avaliableAmountTxt.Text.Trim()));
+            Utility.SetSelectToLastest(m_avaliableAmountTxt);
+        }
+
+        private void m_billAmountTxt_TextChanged(object sender, EventArgs e)
+        {
+            m_billAmountTxt.Text = Utility.FormatDoubleString(Utility.ConvertToOrigin(m_billAmountTxt.Text.Trim()));
+            Utility.SetSelectToLastest(m_billAmountTxt);
+        }
+
+        private void m_avaliableAmountTxt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Utility.CheckTextBoxKeyPress(m_avaliableAmountTxt, sender, e);
+        }
+
+        private void m_billAmountTxt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Utility.CheckTextBoxKeyPress(m_billAmountTxt, sender, e);
         }
     }
 }

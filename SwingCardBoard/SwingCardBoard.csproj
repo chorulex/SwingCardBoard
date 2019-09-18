@@ -61,6 +61,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutWnd.Designer.cs">
+      <DependentUpon>AboutWnd.cs</DependentUpon>
+    </Compile>
     <Compile Include="AccountManageWnd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,7 +80,7 @@
       <DependentUpon>AddAccountWnd.cs</DependentUpon>
     </Compile>
     <Compile Include="AccountBook.cs" />
-    <Compile Include="CurrentAccountStatus.cs" />
+    <Compile Include="AccountDestails.cs" />
     <Compile Include="FundChangeHistoryWnd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +108,10 @@
     <Compile Include="AccountFundEventWnd.Designer.cs">
       <DependentUpon>AccountFundEventWnd.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utility.cs" />
+    <EmbeddedResource Include="AboutWnd.resx">
+      <DependentUpon>AboutWnd.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AccountManageWnd.resx">
       <DependentUpon>AccountManageWnd.cs</DependentUpon>
     </EmbeddedResource>

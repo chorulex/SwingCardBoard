@@ -48,7 +48,11 @@ namespace SwingCardBoard
                     AddFundChangeGroup(eve.Account);
                 }
 
-                SaveToAccountCurrentSwingEvents(eve);
+                var account = AccountBook.GetInstance().FindAccount(eve.Account);
+                if (account != null && eve.Type == "刷卡" && eve.DateTime.CompareTo(account.BillSetDate) >= 0)
+                {
+                    SaveToAccountCurrentSwingEvents(eve);
+                }
             }
         }
 

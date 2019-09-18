@@ -57,7 +57,7 @@ namespace SwingCardBoard
 
             var account = addWnd.NewAccount;
 
-            account.LastDateTime = DateTime.Now.ToLocalTime().ToString();
+            account.LastDateTime = Utility.GetCurrentDTString();
             m_mainwnd.AddAccountStatistics(account);
 
             //

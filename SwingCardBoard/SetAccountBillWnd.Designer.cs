@@ -75,8 +75,10 @@
             // 
             this.m_billAmountTxt.Location = new System.Drawing.Point(101, 137);
             this.m_billAmountTxt.Name = "m_billAmountTxt";
-            this.m_billAmountTxt.Size = new System.Drawing.Size(100, 21);
+            this.m_billAmountTxt.Size = new System.Drawing.Size(122, 21);
             this.m_billAmountTxt.TabIndex = 3;
+            this.m_billAmountTxt.TextChanged += new System.EventHandler(this.m_billAmountTxt_TextChanged);
+            this.m_billAmountTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.m_billAmountTxt_KeyPress);
             // 
             // m_applyBtn
             // 
@@ -110,7 +112,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(207, 142);
+            this.label3.Location = new System.Drawing.Point(229, 142);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 12);
             this.label3.TabIndex = 7;
@@ -146,13 +148,15 @@
             // 
             this.m_avaliableAmountTxt.Location = new System.Drawing.Point(101, 102);
             this.m_avaliableAmountTxt.Name = "m_avaliableAmountTxt";
-            this.m_avaliableAmountTxt.Size = new System.Drawing.Size(100, 21);
+            this.m_avaliableAmountTxt.Size = new System.Drawing.Size(122, 21);
             this.m_avaliableAmountTxt.TabIndex = 3;
+            this.m_avaliableAmountTxt.TextChanged += new System.EventHandler(this.m_avaliableAmountTxt_TextChanged);
+            this.m_avaliableAmountTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.m_avaliableAmountTxt_KeyPress);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(207, 108);
+            this.label6.Location = new System.Drawing.Point(229, 105);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(41, 12);
             this.label6.TabIndex = 7;

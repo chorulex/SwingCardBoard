@@ -48,7 +48,7 @@
             // 
             // m_applyBtn
             // 
-            this.m_applyBtn.Location = new System.Drawing.Point(189, 204);
+            this.m_applyBtn.Location = new System.Drawing.Point(189, 213);
             this.m_applyBtn.Name = "m_applyBtn";
             this.m_applyBtn.Size = new System.Drawing.Size(75, 23);
             this.m_applyBtn.TabIndex = 0;
@@ -85,7 +85,7 @@
             // 
             // m_cancelBtn
             // 
-            this.m_cancelBtn.Location = new System.Drawing.Point(289, 204);
+            this.m_cancelBtn.Location = new System.Drawing.Point(289, 213);
             this.m_cancelBtn.Name = "m_cancelBtn";
             this.m_cancelBtn.Size = new System.Drawing.Size(75, 23);
             this.m_cancelBtn.TabIndex = 4;
@@ -114,13 +114,15 @@
             // 
             this.m_amoutTxt.Location = new System.Drawing.Point(111, 172);
             this.m_amoutTxt.Name = "m_amoutTxt";
-            this.m_amoutTxt.Size = new System.Drawing.Size(103, 21);
+            this.m_amoutTxt.Size = new System.Drawing.Size(139, 21);
             this.m_amoutTxt.TabIndex = 7;
+            this.m_amoutTxt.TextChanged += new System.EventHandler(this.m_amoutTxt_TextChanged);
+            this.m_amoutTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.m_amoutTxt_KeyPress);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(223, 177);
+            this.label4.Location = new System.Drawing.Point(256, 172);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(41, 12);
             this.label4.TabIndex = 8;
@@ -152,13 +154,13 @@
             this.m_noRepayAmountTxt.Location = new System.Drawing.Point(111, 137);
             this.m_noRepayAmountTxt.Name = "m_noRepayAmountTxt";
             this.m_noRepayAmountTxt.ReadOnly = true;
-            this.m_noRepayAmountTxt.Size = new System.Drawing.Size(103, 26);
+            this.m_noRepayAmountTxt.Size = new System.Drawing.Size(139, 26);
             this.m_noRepayAmountTxt.TabIndex = 11;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(223, 143);
+            this.label6.Location = new System.Drawing.Point(256, 138);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(41, 12);
             this.label6.TabIndex = 8;
@@ -167,7 +169,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(223, 105);
+            this.label7.Location = new System.Drawing.Point(256, 100);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(41, 12);
             this.label7.TabIndex = 8;
@@ -189,14 +191,14 @@
             this.m_avaliableAmountTxt.Location = new System.Drawing.Point(111, 98);
             this.m_avaliableAmountTxt.Name = "m_avaliableAmountTxt";
             this.m_avaliableAmountTxt.ReadOnly = true;
-            this.m_avaliableAmountTxt.Size = new System.Drawing.Size(103, 26);
+            this.m_avaliableAmountTxt.Size = new System.Drawing.Size(139, 26);
             this.m_avaliableAmountTxt.TabIndex = 11;
             // 
             // AccountFundEventWnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(539, 240);
+            this.ClientSize = new System.Drawing.Size(539, 249);
             this.Controls.Add(this.m_avaliableAmountTxt);
             this.Controls.Add(this.m_noRepayAmountTxt);
             this.Controls.Add(this.label8);

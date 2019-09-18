@@ -51,6 +51,7 @@
             this.billStartDayNUD = new System.Windows.Forms.NumericUpDown();
             this.label18 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.billExpiredNUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.billStartDayNUD)).BeginInit();
@@ -78,7 +79,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(44, 38);
+            this.label3.Location = new System.Drawing.Point(31, 38);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(65, 12);
             this.label3.TabIndex = 3;
@@ -86,15 +87,17 @@
             // 
             // creditAmountTxt
             // 
-            this.creditAmountTxt.Location = new System.Drawing.Point(115, 34);
+            this.creditAmountTxt.Location = new System.Drawing.Point(102, 34);
             this.creditAmountTxt.Name = "creditAmountTxt";
-            this.creditAmountTxt.Size = new System.Drawing.Size(112, 21);
+            this.creditAmountTxt.Size = new System.Drawing.Size(146, 21);
             this.creditAmountTxt.TabIndex = 4;
+            this.creditAmountTxt.TextChanged += new System.EventHandler(this.creditAmountTxt_TextChanged);
+            this.creditAmountTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.creditAmountTxt_KeyPress);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(233, 38);
+            this.label6.Location = new System.Drawing.Point(249, 38);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(197, 12);
             this.label6.TabIndex = 8;
@@ -258,6 +261,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.cardNameTxt);
             this.groupBox1.Controls.Add(this.label18);
             this.groupBox1.Controls.Add(this.label1);
@@ -281,6 +285,15 @@
             this.groupBox1.TabIndex = 21;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "基本信息（必填）";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(315, 78);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 12);
+            this.label2.TabIndex = 21;
+            this.label2.Text = "（选填）";
             // 
             // groupBox2
             // 
@@ -345,5 +358,6 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label2;
     }
 }

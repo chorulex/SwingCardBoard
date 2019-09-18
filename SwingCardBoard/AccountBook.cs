@@ -7,6 +7,14 @@ namespace SwingCardBoard
 {
     public class Account
     {
+        // 设置当期账单时的日期
+        private string m_billSetDate;
+        public string BillSetDate
+        {
+            get { return m_billSetDate; }
+            set { m_billSetDate = value; }
+        }
+
         /// <summary>
         /// 当期所有刷卡记录
         /// </summary>
@@ -95,16 +103,6 @@ namespace SwingCardBoard
             set { m_swingAmount = value; }
         }
 
-        // 最后一次刷卡得到的可用金额总计，这个金额可用来还款，也可用来做其他的消费，
-        // 与可用额度是不同的。
-        // 称之为准备金或者备用金
-        private double m_reservedAmount = 0.0;
-        public double ReservedAmount
-        {
-            get { return m_reservedAmount; }
-            set { m_reservedAmount = value; }
-        }
-
         // 未还金额：当前未还，但不包含出账后的任何消费项
         private double m_noRepayAmount = 0.0;
         public double NoRepayAmount
@@ -125,8 +123,12 @@ namespace SwingCardBoard
         {
             m_billAmount = bill;
             m_noRepayAmount = bill;
+            m_repayAmount = 0;
+            m_swingAmount = 0;
 
-            m_avaliableAmount = m_creditAmount - m_billAmount - m_swingAmount;
+            // m_avaliableAmount = m_creditAmount - m_billAmount - m_swingAmount;
+            m_billSetDate = Utility.GetCurrentDTString();
+            m_swingEvents.Clear();
         }
 
         // 刷卡
@@ -219,12 +221,12 @@ namespace SwingCardBoard
         public void UpdateTotalAccount()
         {
             // 先清空，然后重新计算。
+            m_totalAccount.CreditAmount = 0;
             m_totalAccount.AvaliableAmount = 0;
             m_totalAccount.BillAmount = 0;
             m_totalAccount.RepayAmount = 0;
             m_totalAccount.NoRepayAmount = 0;
             m_totalAccount.SwingAmount = 0;
-            m_totalAccount.ReservedAmount = 0;
 
             foreach (var account in AccountBook.GetInstance().GetAccounts())
             {
@@ -234,12 +236,12 @@ namespace SwingCardBoard
 
         public void UpdateTotalAccount(Account account)
         {
+            m_totalAccount.CreditAmount += account.CreditAmount;
             m_totalAccount.AvaliableAmount += account.AvaliableAmount;
             m_totalAccount.BillAmount += account.BillAmount;
             m_totalAccount.RepayAmount += account.RepayAmount;
             m_totalAccount.NoRepayAmount += account.NoRepayAmount;
             m_totalAccount.SwingAmount += account.SwingAmount;
-            m_totalAccount.ReservedAmount += account.ReservedAmount;
         }
     }
 }

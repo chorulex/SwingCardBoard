@@ -7,7 +7,7 @@ using System.Text;
 namespace SwingCardBoard
 {
     // save to csv
-    class CurrentAccountStatus
+    class AccountDestailsDB
     {
         readonly string m_fileName = @"data\account_status.csv";
 
@@ -45,7 +45,7 @@ namespace SwingCardBoard
                 if (items.Length > 8)
                     account.SwingAmount = double.Parse(items[8]);
                 if (items.Length > 9)
-                    account.ReservedAmount = double.Parse(items[9]);
+                    account.BillSetDate = items[9];
                 if (items.Length > 10)
                     account.LastDateTime = items[10];
 
@@ -60,7 +60,7 @@ namespace SwingCardBoard
         {
             StreamWriter writer = new StreamWriter(m_fileName);
 
-            writer.Write("账号名称,卡号/账号,账单日期,信用额度,可用额度,账单金额,已还金额,未还金额,刷卡合计,刷卡明细");
+            writer.Write("账号名称,卡号/账号,账单日期,信用额度,可用额度,账单金额,已还金额,未还金额,刷卡合计,上次设置账单日期时间,最后操作日期时间");
             writer.Write("\r\n");
             writer.Flush();
 
@@ -84,7 +84,7 @@ namespace SwingCardBoard
                 WriteSpliter(writer);
                 writer.Write(account.SwingAmount);
                 WriteSpliter(writer);
-                writer.Write(account.ReservedAmount);
+                writer.Write(account.BillSetDate);
                 WriteSpliter(writer);
                 writer.Write(account.LastDateTime);
                 writer.Write("\r\n");

@@ -40,6 +40,21 @@ namespace SwingCardBoard
             get { return m_type; }
             set { m_type = value; }
         }
+
+        public FundEvent(string account, double amount, string type)
+        {
+            Type = type;
+            Account = account;
+            Amount = amount;
+            DateTime = Utility.GetCurrentDTString();
+        }
+        public FundEvent(string account, double amount, string type, string dt)
+        {
+            Type = type;
+            Account = account;
+            Amount = amount;
+            DateTime = dt;
+        }
     }
 
     // 存储到csv
@@ -63,14 +78,7 @@ namespace SwingCardBoard
             {
                 string line = reader.ReadLine();
                 string[] items = line.Split(',');
-
-                FundEvent eve = new FundEvent();
-                eve.Account = items[0];
-                eve.Type = items[1];
-                eve.Amount = double.Parse(items[2]);
-                eve.DateTime = items[3];
-
-                events.Add(eve);
+                events.Add(new FundEvent(items[0], double.Parse(items[2]), items[1], items[3]));
             }
 
             reader.Close();

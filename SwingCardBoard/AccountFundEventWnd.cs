@@ -67,8 +67,8 @@ namespace SwingCardBoard
             var account = AccountBook.GetInstance().GetAccounts()[selectedIndex];
             m_cardNumTxt.Text = account.Number;
 
-            m_noRepayAmountTxt.Text = account.NoRepayAmount.ToString();
-            m_avaliableAmountTxt.Text = account.AvaliableAmount.ToString();
+            m_noRepayAmountTxt.Text = Utility.FormatDoubleString(account.NoRepayAmount);
+            m_avaliableAmountTxt.Text = Utility.FormatDoubleString(account.AvaliableAmount);
         }
 
         private void m_cardComb_SelectedIndexChanged(object sender, EventArgs e)
@@ -109,12 +109,25 @@ namespace SwingCardBoard
                 return;
             }
 
-            account.LastDateTime = DateTime.Now.ToLocalTime().ToString();
+            account.LastDateTime = Utility.GetCurrentDTString();
             m_account = account;
             m_amount = bill;
 
             DialogResult = DialogResult.OK;
             this.Close();
+        }
+
+        // 调整数值显示格式
+        private void m_amoutTxt_TextChanged(object sender, EventArgs e)
+        {
+            m_amoutTxt.Text = Utility.FormatDoubleString(Utility.ConvertToOrigin(m_amoutTxt.Text));
+            Utility.SetSelectToLastest(m_amoutTxt);
+        }
+
+        // 仅允许输入数值，且小数点后只能保留两位
+        private void m_amoutTxt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Utility.CheckTextBoxKeyPress(m_amoutTxt, sender, e);
         }
     }
 }
