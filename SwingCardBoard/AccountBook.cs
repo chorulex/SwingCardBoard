@@ -73,8 +73,22 @@ namespace SwingCardBoard
         public void CalcLastBillDruction()
         {
             DateTime now = DateTime.Now.ToLocalTime();
+            if (now.Day <= m_billStartDay)
+            {
+                if (now.Month - 1 == 0)
+                {
+                    LastBillEnd = new DateTime(now.Year - 1, 12, m_billStartDay);
+                }
+                else
+                {
+                    LastBillEnd = new DateTime(now.Year, now.Month - 1, m_billStartDay);
+                }
+            }
+            else
+            {
+                LastBillEnd = new DateTime(now.Year, now.Month, m_billStartDay);
+            }
 
-            LastBillEnd = new DateTime(now.Year, now.Month, m_billStartDay);
             if (LastBillEnd.Month - 1 == 0)
             {
                 LastBillStart = new DateTime(now.Year - 1, 12, m_billStartDay);
