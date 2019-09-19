@@ -56,7 +56,9 @@ namespace SwingCardBoard
                 }
 
                 var account = AccountBook.GetInstance().FindAccount(eve.Account);
-                if (account != null && eve.Type == "刷卡" && eve.DateTime.CompareTo(account.BillSetDate) >= 0)
+                if (account != null 
+                    && eve.Type == "刷卡" 
+                    && eve.DateTime.CompareTo(Utility.FormatDateString(account.LastBillEnd)) >= 0)
                 {
                     SaveToAccountCurrentSwingEvents(eve);
                 }
@@ -111,6 +113,7 @@ namespace SwingCardBoard
             row.SubItems.Add(eve.Account);
             row.SubItems.Add(eve.Type);
             row.SubItems.Add(eve.Amount.ToString());
+            row.SubItems.Add(eve.Charge.ToString());
             row.SubItems.Add(eve.DateTime);
 
             group.Items.Add(row);

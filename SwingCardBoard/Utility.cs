@@ -15,7 +15,12 @@ namespace SwingCardBoard
         # region common
         public static string GetCurrentDTString()
         {
-            return DateTime.Now.ToLocalTime().ToString();
+            return FormatDateString(DateTime.Now);
+        }
+
+        public static string FormatDateString(DateTime dt)
+        {
+            return dt.ToLocalTime().ToString();
         }
 
         public static string FormatDoubleString(double origin)
@@ -62,7 +67,15 @@ namespace SwingCardBoard
         {
             txtBox.Select(txtBox.TextLength, 0);
         }
-        public static void CheckTextBoxKeyPress(System.Windows.Forms.TextBox ctr, object sender, System.Windows.Forms.KeyPressEventArgs e)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="precision">小数点后位数</param>
+        /// <param name="ctr"></param>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public static void CheckTextBoxKeyPress(System.Windows.Forms.TextBox ctr, object sender, System.Windows.Forms.KeyPressEventArgs e, int precision=2)
         {
             char ch = e.KeyChar;
             int dotPos = ctr.Text.IndexOf('.');
@@ -78,8 +91,7 @@ namespace SwingCardBoard
             }
             else if (char.IsDigit(ch))
             {
-                // 小数点后仅能两位有效数
-                if (dotPos != -1 && ctr.Text.Length - dotPos - 1 >= 2)
+                if (dotPos != -1 && ctr.Text.Length - dotPos - 1 >= precision)
                 {
                     e.Handled = true;
                     return;

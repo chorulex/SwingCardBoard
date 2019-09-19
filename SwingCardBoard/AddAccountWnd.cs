@@ -25,6 +25,7 @@ namespace SwingCardBoard
             this.CancelButton = cancelBtn;
             this.billExpiredNUD.Maximum = 31;
             this.billExpiredNUD.Minimum = 1;
+            this.m_rateTxt.Text = "0.0";
             this.Text = "添加新账号";
         }
 
@@ -36,6 +37,7 @@ namespace SwingCardBoard
             this.CancelButton = cancelBtn;
             this.billExpiredNUD.Maximum = 31;
             this.billExpiredNUD.Minimum = 1;
+            this.m_rateTxt.Text = "0.0";
             this.Text = "修改账号";
 
             // 账号不可更改！
@@ -46,6 +48,7 @@ namespace SwingCardBoard
             this.billStartDayNUD.Text = account.BillStartDay.ToString();
             this.numberTxt.Text = account.Number;
             this.creditAmountTxt.Text = account.CreditAmount.ToString();
+            this.m_rateTxt.Text = account.Rate.ToString();
 
             m_newAccount = account;
         }
@@ -65,6 +68,7 @@ namespace SwingCardBoard
             account.ExpiredDate = expiredDT.Value.ToShortDateString();
             account.BillStartDay = int.Parse(billStartDayNUD.Value.ToString());
             account.BillExpiredDay = int.Parse(billExpiredNUD.Value.ToString());
+            account.Rate = double.Parse(m_rateTxt.Text);
 
             string amountStr = creditAmountTxt.Text.Trim();
             if (string.IsNullOrEmpty(amountStr))
@@ -110,6 +114,7 @@ namespace SwingCardBoard
             m_newAccount.BillStartDay = account.BillStartDay;
             m_newAccount.CreditAmount = account.CreditAmount;
             m_newAccount.LastDateTime = Utility.GetCurrentDTString();
+            m_newAccount.Rate = account.Rate;
         }
 
         private bool AddAccount(Account newAccount)
@@ -136,6 +141,11 @@ namespace SwingCardBoard
         private void creditAmountTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
             Utility.CheckTextBoxKeyPress(creditAmountTxt, sender, e);
+        }
+
+        private void m_rateTxt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Utility.CheckTextBoxKeyPress(creditAmountTxt, sender, e, 4);
         }
     }
 }

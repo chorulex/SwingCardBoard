@@ -33,6 +33,7 @@
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.m_fundChangeLV = new System.Windows.Forms.ListView();
             this.SuspendLayout();
             // 
@@ -61,6 +62,12 @@
             this.columnHeader5.Text = "序号";
             this.columnHeader5.Width = 50;
             // 
+            // columnHeader6
+            // 
+            this.columnHeader6.DisplayIndex = 5;
+            this.columnHeader6.Text = "刷卡手续费";
+            this.columnHeader6.Width = 100;
+            // 
             // m_fundChangeLV
             // 
             this.m_fundChangeLV.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -71,11 +78,12 @@
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3,
+            this.columnHeader6,
             this.columnHeader4});
             this.m_fundChangeLV.FullRowSelect = true;
             this.m_fundChangeLV.Location = new System.Drawing.Point(12, 12);
             this.m_fundChangeLV.Name = "m_fundChangeLV";
-            this.m_fundChangeLV.Size = new System.Drawing.Size(578, 629);
+            this.m_fundChangeLV.Size = new System.Drawing.Size(707, 629);
             this.m_fundChangeLV.TabIndex = 7;
             this.m_fundChangeLV.UseCompatibleStateImageBehavior = false;
             this.m_fundChangeLV.View = System.Windows.Forms.View.Details;
@@ -84,7 +92,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(602, 653);
+            this.ClientSize = new System.Drawing.Size(731, 653);
             this.Controls.Add(this.m_fundChangeLV);
             this.Name = "FundChangeHistoryWnd";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -102,5 +110,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ListView m_fundChangeLV;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
     }
 }

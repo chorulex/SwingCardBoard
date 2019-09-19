@@ -38,6 +38,7 @@
             this.billExpired = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.billStartDay = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.creditAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DeleteColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.EditColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.m_accountListDGV)).BeginInit();
@@ -55,13 +56,14 @@
             this.billExpired,
             this.billStartDay,
             this.creditAmount,
+            this.rateColumn,
             this.DeleteColumn,
             this.EditColumn});
             this.m_accountListDGV.Location = new System.Drawing.Point(13, 12);
             this.m_accountListDGV.Name = "m_accountListDGV";
             this.m_accountListDGV.RowHeadersVisible = false;
             this.m_accountListDGV.RowTemplate.Height = 23;
-            this.m_accountListDGV.Size = new System.Drawing.Size(770, 294);
+            this.m_accountListDGV.Size = new System.Drawing.Size(868, 294);
             this.m_accountListDGV.TabIndex = 0;
             this.m_accountListDGV.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.m_accountListDGV_CellMouseClick);
             // 
@@ -77,7 +79,7 @@
             // 
             // m_applyBtn
             // 
-            this.m_applyBtn.Location = new System.Drawing.Point(627, 313);
+            this.m_applyBtn.Location = new System.Drawing.Point(725, 313);
             this.m_applyBtn.Name = "m_applyBtn";
             this.m_applyBtn.Size = new System.Drawing.Size(75, 23);
             this.m_applyBtn.TabIndex = 2;
@@ -87,7 +89,7 @@
             // 
             // m_cancelBtn
             // 
-            this.m_cancelBtn.Location = new System.Drawing.Point(708, 313);
+            this.m_cancelBtn.Location = new System.Drawing.Point(806, 313);
             this.m_cancelBtn.Name = "m_cancelBtn";
             this.m_cancelBtn.Size = new System.Drawing.Size(75, 23);
             this.m_cancelBtn.TabIndex = 3;
@@ -121,7 +123,7 @@
             // 
             // billExpired
             // 
-            this.billExpired.HeaderText = "账单到期日";
+            this.billExpired.HeaderText = "最后还款日";
             this.billExpired.Name = "billExpired";
             this.billExpired.ReadOnly = true;
             this.billExpired.Width = 95;
@@ -139,6 +141,13 @@
             this.creditAmount.Name = "creditAmount";
             this.creditAmount.ReadOnly = true;
             this.creditAmount.Width = 120;
+            // 
+            // rateColumn
+            // 
+            this.rateColumn.HeaderText = "手续费率";
+            this.rateColumn.Name = "rateColumn";
+            this.rateColumn.ReadOnly = true;
+            this.rateColumn.Width = 80;
             // 
             // DeleteColumn
             // 
@@ -158,7 +167,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(795, 348);
+            this.ClientSize = new System.Drawing.Size(893, 348);
             this.Controls.Add(this.m_cleanBtn);
             this.Controls.Add(this.m_cancelBtn);
             this.Controls.Add(this.m_applyBtn);
@@ -187,6 +196,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn billExpired;
         private System.Windows.Forms.DataGridViewTextBoxColumn billStartDay;
         private System.Windows.Forms.DataGridViewTextBoxColumn creditAmount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn rateColumn;
         private System.Windows.Forms.DataGridViewButtonColumn DeleteColumn;
         private System.Windows.Forms.DataGridViewButtonColumn EditColumn;
     }

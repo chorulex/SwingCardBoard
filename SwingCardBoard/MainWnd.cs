@@ -42,36 +42,8 @@ namespace SwingCardBoard
         private void SetCurrentTime()
         {
             var currentDate = DateTime.Now.ToLocalTime().Date;
-            this.Text = "养卡记 -" + currentDate.Year + "/" + currentDate.Month + "/" + currentDate.Day;
-        }
-
-        // 记录一笔刷卡记录
-        private void takeNoteBtn_Click(object sender, EventArgs e)
-        {
-            AccountFundEventWnd eventWnd = new AccountFundEventWnd(this, "刷卡");
-            if (DialogResult.OK == eventWnd.ShowDialog())
-            {
-                var account = eventWnd.Account;
-
-                account.AddSwing(eventWnd.Amount);
-
-                UpdateAccountView(account);
-                m_fundEventWnd.AddFundChangeEvent(new FundEvent(account.Name, eventWnd.Amount, "刷卡", account.LastDateTime));
-            }
-        }
-
-        // 记一笔还款记录
-        private void m_repayBtn_Click(object sender, EventArgs e)
-        {
-            AccountFundEventWnd eventWnd = new AccountFundEventWnd(this, "还卡");
-            if (DialogResult.OK == eventWnd.ShowDialog())
-            {
-                var account = eventWnd.Account;
-                account.AddRepay(eventWnd.Amount);
-
-                UpdateAccountView(account);
-                m_fundEventWnd.AddFundChangeEvent(new FundEvent(account.Name, eventWnd.Amount, "还款", account.LastDateTime));
-            }
+            this.Text = "养卡记";
+            this.m_dateLblabel1.Text = currentDate.Year + "年" + currentDate.Month + "月";
         }
 
         public void Reset()
@@ -114,7 +86,8 @@ namespace SwingCardBoard
             row.CreateCells(m_accountStatisticsDgv);
 
             row.Cells[0].Value = account.Name;
-            row.Cells[1].Value = account.BillStartDay + " - " + account.BillExpiredDay;
+            row.Cells[1].Value = account.LastBillStart.ToShortDateString() + " - " + account.LastBillEnd.ToShortDateString();
+            row.Cells[2].Value = account.BillStartDay +"/"+account.BillExpiredDay;
 
             SetAcountAmount(account, row);
 
@@ -139,10 +112,12 @@ namespace SwingCardBoard
         private void InitAccountView()
         {
             var font = new Font("微软雅黑", 9f, FontStyle.Regular);
-            //billDate.DefaultCellStyle.Font = font;
+            accountColumn.DefaultCellStyle.Font = font;
+            billDate.DefaultCellStyle.Font = font;
+            repayDayColumn.DefaultCellStyle.Font = font;
             creditAmount.DefaultCellStyle.Font = font;
             swingAmount.DefaultCellStyle.Font = font;
-
+            chargeColumn.DefaultCellStyle.Font = font;
             avaliableAmount.DefaultCellStyle.Font = font;
             avaliableAmount.DefaultCellStyle.ForeColor = Color.Green;
             billAmount.DefaultCellStyle.Font = font;
@@ -151,6 +126,8 @@ namespace SwingCardBoard
             repayAmount.DefaultCellStyle.ForeColor = Color.Green;
             norepayAmount.DefaultCellStyle.Font = font;
             norepayAmount.DefaultCellStyle.ForeColor = Color.Red;
+            swingAmount.DefaultCellStyle.ForeColor = Color.DarkBlue;
+            chargeColumn.DefaultCellStyle.ForeColor = Color.DarkBlue;
 
             // 禁止排序
             for (int i = 0; i < m_accountStatisticsDgv.Columns.Count; i++)
@@ -180,26 +157,27 @@ namespace SwingCardBoard
 
         private void SetAcountAmount(Account account, DataGridViewRow row)
         {
-            row.Cells[2].Value = Utility.FormatDoubleString(account.CreditAmount);
-            row.Cells[3].Value = Utility.FormatDoubleString(account.AvaliableAmount);
-            row.Cells[4].Value = Utility.FormatDoubleString(account.BillAmount);
-            row.Cells[5].Value = Utility.FormatDoubleString(account.RepayAmount);
-            row.Cells[6].Value = Utility.FormatDoubleString(account.NoRepayAmount);
-            row.Cells[7].Value = Utility.FormatDoubleString(account.SwingAmount);
+            row.Cells[3].Value = Utility.FormatDoubleString(account.CreditAmount);
+            row.Cells[4].Value = Utility.FormatDoubleString(account.AvaliableAmount);
+            row.Cells[5].Value = Utility.FormatDoubleString(account.BillAmount);
+            row.Cells[6].Value = Utility.FormatDoubleString(account.RepayAmount);
+            row.Cells[7].Value = Utility.FormatDoubleString(account.NoRepayAmount);
+            row.Cells[8].Value = Utility.FormatDoubleString(account.SwingAmount);
+            row.Cells[9].Value =account.Charge.ToString();
 
             // 已还清
             if (account.NoRepayAmount - 0.0 <= 0.000001)
             {
-                row.Cells[8].Value = "本期已还清";
-                row.Cells[8].Style.ForeColor = Color.Green;
+                row.Cells[10].Value = "本期已还清";
+                row.Cells[10].Style.ForeColor = Color.Green;
             }
             else
             {
-                row.Cells[8].Value = "本期尚未还清";
-                row.Cells[8].Style.ForeColor = Color.Red;
+                row.Cells[10].Value = "本期尚未还清";
+                row.Cells[10].Style.ForeColor = Color.Red;
             }
 
-            row.Cells[9].Value = account.LastDateTime;
+            row.Cells[11].Value = account.LastDateTime;
         }
 
         private void UpdateAccountView(string name)
@@ -241,24 +219,26 @@ namespace SwingCardBoard
 
             row.Cells[0].Value = account.Name;
             row.Cells[0].Style.Font = font;
-            row.Cells[2].Value = Utility.FormatDoubleString(account.CreditAmount);
-            row.Cells[2].Style.Font = font;
-            row.Cells[3].Value = Utility.FormatDoubleString(account.AvaliableAmount);
+            row.Cells[3].Value = Utility.FormatDoubleString(account.CreditAmount);
             row.Cells[3].Style.Font = font;
-            row.Cells[4].Value = Utility.FormatDoubleString(account.BillAmount);
+            row.Cells[4].Value = Utility.FormatDoubleString(account.AvaliableAmount);
             row.Cells[4].Style.Font = font;
-            row.Cells[5].Value = Utility.FormatDoubleString(account.RepayAmount);
+            row.Cells[5].Value = Utility.FormatDoubleString(account.BillAmount);
             row.Cells[5].Style.Font = font;
-            row.Cells[6].Value = Utility.FormatDoubleString(account.NoRepayAmount);
+            row.Cells[6].Value = Utility.FormatDoubleString(account.RepayAmount);
             row.Cells[6].Style.Font = font;
-            row.Cells[7].Value = Utility.FormatDoubleString(account.SwingAmount);
+            row.Cells[7].Value = Utility.FormatDoubleString(account.NoRepayAmount);
             row.Cells[7].Style.Font = font;
+            row.Cells[8].Value = Utility.FormatDoubleString(account.SwingAmount);
+            row.Cells[8].Style.Font = font;
+            row.Cells[9].Value = account.Charge.ToString();
+            row.Cells[9].Style.Font = font;
         }
 
         // 鼠标放到刷卡明细单元格时显示当期所有刷卡明细
         private void m_accountStatisticsDgv_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 7 && e.RowIndex >= 0 && e.RowIndex != m_totalRowIndex)
+            if (e.ColumnIndex == 8 && e.RowIndex >= 0 && e.RowIndex != m_totalRowIndex)
             {
                 var row = m_accountStatisticsDgv.Rows[e.RowIndex];
                 string accountName = row.Cells[0].Value.ToString();
@@ -293,6 +273,34 @@ namespace SwingCardBoard
         }
 
         # endregion
+
+        // 记录一笔刷卡记录
+        private void takeNoteBtn_Click(object sender, EventArgs e)
+        {
+            AccountFundEventWnd eventWnd = new AccountFundEventWnd(this, "刷卡");
+            if (DialogResult.OK == eventWnd.ShowDialog())
+            {
+                var account = eventWnd.Account;
+
+                account.AddSwing(eventWnd.Amount, eventWnd.Charge);
+                UpdateAccountView(account);
+                m_fundEventWnd.AddFundChangeEvent(new FundEvent(account.Name, eventWnd.Amount, eventWnd.Charge, "刷卡", account.LastDateTime));
+            }
+        }
+
+        // 记一笔还款记录
+        private void m_repayBtn_Click(object sender, EventArgs e)
+        {
+            AccountFundEventWnd eventWnd = new AccountFundEventWnd(this, "还卡");
+            if (DialogResult.OK == eventWnd.ShowDialog())
+            {
+                var account = eventWnd.Account;
+                account.AddRepay(eventWnd.Amount);
+
+                UpdateAccountView(account);
+                m_fundEventWnd.AddFundChangeEvent(new FundEvent(account.Name, eventWnd.Amount,0, "还款", account.LastDateTime));
+            }
+        }
 
         private void 账号管理ToolStripMenuItem1_Click(object sender, EventArgs e)
         {

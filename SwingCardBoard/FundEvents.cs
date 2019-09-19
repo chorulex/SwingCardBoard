@@ -30,7 +30,16 @@ namespace SwingCardBoard
         }
 
         /// <summary>
-        /// 仅两种类型：
+        /// 刷卡手续费，仅在刷卡时才有效！
+        /// </summary>
+        private double m_charge;
+        public double Charge
+        {
+            get { return m_charge; }
+            set { m_charge = value; }
+        }
+
+        /// <summary>
         /// 1：刷卡
         /// 2：还款
         /// </summary>
@@ -48,11 +57,13 @@ namespace SwingCardBoard
             Amount = amount;
             DateTime = Utility.GetCurrentDTString();
         }
-        public FundEvent(string account, double amount, string type, string dt)
+
+        public FundEvent(string account, double amount,double charge, string type, string dt)
         {
             Type = type;
             Account = account;
             Amount = amount;
+            Charge = charge;
             DateTime = dt;
         }
     }
@@ -84,7 +95,11 @@ namespace SwingCardBoard
             {
                 string line = reader.ReadLine();
                 string[] items = line.Split(',');
-                events.Add(new FundEvent(items[0], double.Parse(items[2]), items[1], items[3]));
+
+                if (items.Length >= 5)
+                    events.Add(new FundEvent(items[0], double.Parse(items[2]), double.Parse(items[4]), items[1], items[3]));
+                else
+                    events.Add(new FundEvent(items[0], double.Parse(items[2]), 0, items[1], items[3]));
             }
 
             reader.Close();
@@ -100,7 +115,7 @@ namespace SwingCardBoard
 
             if (newFile)
             {
-                writer.Write("账号名称,资金变动类型,资金变动额度,操作日期时间");
+                writer.Write("账号名称,资金变动类型,资金变动额度,操作日期时间, 刷卡手续费");
                 writer.Write("\r\n");
                 writer.Flush();
             }
@@ -112,6 +127,8 @@ namespace SwingCardBoard
             writer.Write(eve.Amount.ToString());
             WriteSpliter(writer);
             writer.Write(eve.DateTime);
+            WriteSpliter(writer);
+            writer.Write(eve.Charge);
             writer.Write("\r\n");
             writer.Flush();
 

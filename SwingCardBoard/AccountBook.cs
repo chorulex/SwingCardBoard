@@ -60,11 +60,33 @@ namespace SwingCardBoard
         public int BillStartDay
         {
             get { return m_billStartDay; }
-            set { m_billStartDay = value; }
+            set
+            {
+                m_billStartDay = value;
+                CalcLastBillDruction();
+            }
         }
 
+        // 计算出该账户上一期账单时间范围
+        public DateTime LastBillEnd { get; set; }
+        public DateTime LastBillStart { get; set; }
+        public void CalcLastBillDruction()
+        {
+            DateTime now = DateTime.Now.ToLocalTime();
 
-        // 每月账单到期日,[1,31]
+            LastBillEnd = new DateTime(now.Year, now.Month, m_billStartDay);
+            if (LastBillEnd.Month - 1 == 0)
+            {
+                LastBillStart = new DateTime(now.Year - 1, 12, m_billStartDay);
+            }
+            else
+            {
+                LastBillStart = new DateTime(now.Year, LastBillEnd.Month -1 , m_billStartDay);
+            }
+            LastBillStart = LastBillStart.AddDays(1);
+        }
+
+        // 每月最后还款日,[1,31]
         private int m_billExpiredDay;
         public int BillExpiredDay
         {
@@ -104,6 +126,12 @@ namespace SwingCardBoard
             set { m_swingAmount = value; }
         }
 
+        // 刷卡手续费
+        public double Charge { get; set; }
+
+        // 刷卡手续费率
+        public double Rate { get; set; }
+
         // 未还金额：当前未还，但不包含出账后的任何消费项
         private double m_noRepayAmount = 0.0;
         public double NoRepayAmount
@@ -126,6 +154,7 @@ namespace SwingCardBoard
             m_noRepayAmount = bill;
             m_repayAmount = 0;
             m_swingAmount = 0;
+            Charge = 0;
 
             // m_avaliableAmount = m_creditAmount - m_billAmount - m_swingAmount;
             m_billSetDate = Utility.GetCurrentDTString();
@@ -133,10 +162,11 @@ namespace SwingCardBoard
         }
 
         // 刷卡
-        public void AddSwing(double amount)
+        public void AddSwing(double amount, double charge)
         {
             m_swingAmount += amount;
             m_avaliableAmount -= amount;
+            Charge += charge;
         }
 
         // 还款
@@ -246,6 +276,7 @@ namespace SwingCardBoard
             m_totalAccount.RepayAmount = 0;
             m_totalAccount.NoRepayAmount = 0;
             m_totalAccount.SwingAmount = 0;
+            m_totalAccount.Charge = 0;
 
             foreach (var account in AccountBook.GetInstance().GetAccounts())
             {
@@ -261,6 +292,7 @@ namespace SwingCardBoard
             m_totalAccount.RepayAmount += account.RepayAmount;
             m_totalAccount.NoRepayAmount += account.NoRepayAmount;
             m_totalAccount.SwingAmount += account.SwingAmount;
+            m_totalAccount.Charge += account.Charge;
         }
     }
 }

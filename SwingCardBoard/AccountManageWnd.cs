@@ -45,8 +45,9 @@ namespace SwingCardBoard
             row.Cells[2].Value = account.BillStartDay;
             row.Cells[3].Value = account.BillExpiredDay;
             row.Cells[4].Value = account.CreditAmount.ToString();
-            row.Cells[5].Value = "删除";
-            row.Cells[6].Value = "编辑";
+            row.Cells[5].Value = account.Rate.ToString();
+            row.Cells[6].Value = "删除";
+            row.Cells[7].Value = "编辑";
         }
 
         private Account GetAccountInView(int rowIndex)
@@ -104,7 +105,7 @@ namespace SwingCardBoard
             Account account = GetAccountInView(e.RowIndex);
 
             // 删除
-            if (e.ColumnIndex == 5)
+            if (e.ColumnIndex == 6)
             {
                 if (DialogResult.No == MessageBox.Show(this, "删除后不可恢复！确定删除吗？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
                 {
@@ -116,7 +117,7 @@ namespace SwingCardBoard
                 return;
             }
 
-            if (e.ColumnIndex == 6)
+            if (e.ColumnIndex == 7)
             {
                 AddAccountWnd addWnd = new AddAccountWnd(account);
                 if (DialogResult.OK != addWnd.ShowDialog() && addWnd.NewAccount == null)
@@ -127,6 +128,7 @@ namespace SwingCardBoard
                 Account newAccount = addWnd.NewAccount;
                 m_mainwnd.UpdateAccount(newAccount);
                 SetCreditAmount(e.RowIndex, newAccount.CreditAmount);
+                SetRate(e.RowIndex, newAccount.Rate);
                 return;
             }
         }
@@ -134,6 +136,11 @@ namespace SwingCardBoard
         private void SetCreditAmount(int rowIndex, double value)
         {
             m_accountListDGV.Rows[rowIndex].Cells[4].Value = value.ToString();
+        }
+
+        private void SetRate(int rowIndex, double value)
+        {
+            m_accountListDGV.Rows[rowIndex].Cells[5].Value = value.ToString();
         }
     }
 }

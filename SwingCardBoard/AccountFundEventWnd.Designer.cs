@@ -44,11 +44,15 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.m_avaliableAmountTxt = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.m_chargeTxt = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.m_rateLb = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // m_applyBtn
             // 
-            this.m_applyBtn.Location = new System.Drawing.Point(189, 213);
+            this.m_applyBtn.Location = new System.Drawing.Point(182, 261);
             this.m_applyBtn.Name = "m_applyBtn";
             this.m_applyBtn.Size = new System.Drawing.Size(75, 23);
             this.m_applyBtn.TabIndex = 0;
@@ -85,7 +89,7 @@
             // 
             // m_cancelBtn
             // 
-            this.m_cancelBtn.Location = new System.Drawing.Point(289, 213);
+            this.m_cancelBtn.Location = new System.Drawing.Point(282, 261);
             this.m_cancelBtn.Name = "m_cancelBtn";
             this.m_cancelBtn.Size = new System.Drawing.Size(75, 23);
             this.m_cancelBtn.TabIndex = 4;
@@ -122,7 +126,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(256, 172);
+            this.label4.Location = new System.Drawing.Point(256, 177);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(41, 12);
             this.label4.TabIndex = 8;
@@ -160,7 +164,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(256, 138);
+            this.label6.Location = new System.Drawing.Point(256, 143);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(41, 12);
             this.label6.TabIndex = 8;
@@ -169,7 +173,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(256, 100);
+            this.label7.Location = new System.Drawing.Point(256, 104);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(41, 12);
             this.label7.TabIndex = 8;
@@ -194,11 +198,49 @@
             this.m_avaliableAmountTxt.Size = new System.Drawing.Size(139, 26);
             this.m_avaliableAmountTxt.TabIndex = 11;
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(52, 213);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(53, 12);
+            this.label9.TabIndex = 12;
+            this.label9.Text = "手续费：";
+            // 
+            // m_chargeTxt
+            // 
+            this.m_chargeTxt.Location = new System.Drawing.Point(111, 209);
+            this.m_chargeTxt.Name = "m_chargeTxt";
+            this.m_chargeTxt.Size = new System.Drawing.Size(139, 21);
+            this.m_chargeTxt.TabIndex = 13;
+            this.m_chargeTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.m_chargeTxt_KeyPress);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(256, 213);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(41, 12);
+            this.label10.TabIndex = 8;
+            this.label10.Text = "（元）";
+            // 
+            // m_rateLb
+            // 
+            this.m_rateLb.AutoSize = true;
+            this.m_rateLb.Location = new System.Drawing.Point(310, 213);
+            this.m_rateLb.Name = "m_rateLb";
+            this.m_rateLb.Size = new System.Drawing.Size(29, 12);
+            this.m_rateLb.TabIndex = 14;
+            this.m_rateLb.Text = "费率";
+            // 
             // AccountFundEventWnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(539, 249);
+            this.ClientSize = new System.Drawing.Size(539, 296);
+            this.Controls.Add(this.m_rateLb);
+            this.Controls.Add(this.m_chargeTxt);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.m_avaliableAmountTxt);
             this.Controls.Add(this.m_noRepayAmountTxt);
             this.Controls.Add(this.label8);
@@ -206,6 +248,7 @@
             this.Controls.Add(this.addCardLab);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.m_amoutTxt);
             this.Controls.Add(this.label3);
@@ -244,5 +287,9 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox m_avaliableAmountTxt;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox m_chargeTxt;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label m_rateLb;
     }
 }

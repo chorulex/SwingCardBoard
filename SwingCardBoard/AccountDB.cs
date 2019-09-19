@@ -69,6 +69,10 @@ namespace SwingCardBoard
                     account.BillSetDate = items[9];
                 if (items.Length > 10)
                     account.LastDateTime = items[10];
+                if (items.Length > 11)
+                    account.Rate = double.Parse(items[11]);
+                if (items.Length > 12)
+                    account.Charge = double.Parse(items[12]);
 
                 AccountBook.GetInstance().AddAccount(account);
             }
@@ -81,7 +85,7 @@ namespace SwingCardBoard
         {
             StreamWriter writer = new StreamWriter(m_fileName);
 
-            writer.Write("账号名称,卡号/账号,账单日期,信用额度,可用额度,账单金额,已还金额,未还金额,刷卡合计,上次设置账单日期时间,最后操作日期时间");
+            writer.Write("账号名称,卡号/账号,账单日期,信用额度,可用额度,账单金额,已还金额,未还金额,刷卡合计,上次设置账单日期时间,最后操作日期时间,刷卡手续费率,刷卡手续费");
             writer.Write("\r\n");
             writer.Flush();
 
@@ -108,6 +112,10 @@ namespace SwingCardBoard
                 writer.Write(account.BillSetDate);
                 WriteSpliter(writer);
                 writer.Write(account.LastDateTime);
+                WriteSpliter(writer);
+                writer.Write(account.Rate);
+                WriteSpliter(writer);
+                writer.Write(account.Charge);
                 writer.Write("\r\n");
                 writer.Flush();
             }
