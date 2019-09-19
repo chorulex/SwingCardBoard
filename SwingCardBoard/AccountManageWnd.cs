@@ -28,6 +28,8 @@ namespace SwingCardBoard
             var font = new Font("宋体", 9.5f, FontStyle.Bold);
             creditAmount.DefaultCellStyle.Font = font;
             creditAmount.DefaultCellStyle.ForeColor = Color.Green;
+            creditAmount.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            rateColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
             foreach (var account in AccountBook.GetInstance().GetAccounts())
             {

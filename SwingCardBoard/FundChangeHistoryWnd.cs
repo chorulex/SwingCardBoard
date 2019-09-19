@@ -75,8 +75,12 @@ namespace SwingCardBoard
         ListViewGroup AddFundChangeGroup(string account)
         {
             ListViewGroup group = new ListViewGroup();
+
             group.Header = account;
             group.HeaderAlignment = HorizontalAlignment.Left;
+
+            columnHeader3.TextAlign = HorizontalAlignment.Right;
+            columnHeader6.TextAlign = HorizontalAlignment.Right;
 
             m_fundChangeLV.Groups.Add(group);
             m_accountGroup.Add(account, group);

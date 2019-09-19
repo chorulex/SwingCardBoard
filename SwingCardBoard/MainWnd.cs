@@ -112,22 +112,37 @@ namespace SwingCardBoard
         private void InitAccountView()
         {
             var font = new Font("微软雅黑", 9f, FontStyle.Regular);
+
             accountColumn.DefaultCellStyle.Font = font;
             billDate.DefaultCellStyle.Font = font;
             repayDayColumn.DefaultCellStyle.Font = font;
+
             creditAmount.DefaultCellStyle.Font = font;
-            swingAmount.DefaultCellStyle.Font = font;
-            chargeColumn.DefaultCellStyle.Font = font;
+            creditAmount.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
             avaliableAmount.DefaultCellStyle.Font = font;
             avaliableAmount.DefaultCellStyle.ForeColor = Color.Green;
+            avaliableAmount.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
             billAmount.DefaultCellStyle.Font = font;
             billAmount.DefaultCellStyle.ForeColor = Color.Red;
+            billAmount.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
             repayAmount.DefaultCellStyle.Font = font;
+            repayAmount.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             repayAmount.DefaultCellStyle.ForeColor = Color.Green;
+
             norepayAmount.DefaultCellStyle.Font = font;
             norepayAmount.DefaultCellStyle.ForeColor = Color.Red;
+            norepayAmount.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            swingAmount.DefaultCellStyle.Font = font;
             swingAmount.DefaultCellStyle.ForeColor = Color.DarkBlue;
+            swingAmount.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            chargeColumn.DefaultCellStyle.Font = font;
             chargeColumn.DefaultCellStyle.ForeColor = Color.DarkBlue;
+            chargeColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
             // 禁止排序
             for (int i = 0; i < m_accountStatisticsDgv.Columns.Count; i++)
