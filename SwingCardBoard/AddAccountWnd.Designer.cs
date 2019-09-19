@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.cardNameTxt = new System.Windows.Forms.TextBox();
+            this.m_accountNameTxt = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.creditAmountTxt = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -71,10 +71,10 @@
             // 
             // cardNameTxt
             // 
-            this.cardNameTxt.Location = new System.Drawing.Point(121, 33);
-            this.cardNameTxt.Name = "cardNameTxt";
-            this.cardNameTxt.Size = new System.Drawing.Size(141, 21);
-            this.cardNameTxt.TabIndex = 1;
+            this.m_accountNameTxt.Location = new System.Drawing.Point(121, 33);
+            this.m_accountNameTxt.Name = "cardNameTxt";
+            this.m_accountNameTxt.Size = new System.Drawing.Size(141, 21);
+            this.m_accountNameTxt.TabIndex = 1;
             // 
             // label3
             // 
@@ -262,7 +262,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.cardNameTxt);
+            this.groupBox1.Controls.Add(this.m_accountNameTxt);
             this.groupBox1.Controls.Add(this.label18);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.billStartDayNUD);
@@ -335,7 +335,7 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox cardNameTxt;
+        private System.Windows.Forms.TextBox m_accountNameTxt;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox creditAmountTxt;
         private System.Windows.Forms.Label label6;

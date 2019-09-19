@@ -45,6 +45,14 @@ namespace SwingCardBoard
             row.Cells[2].Value = account.BillStartDay;
             row.Cells[3].Value = account.BillExpiredDay;
             row.Cells[4].Value = account.CreditAmount.ToString();
+            row.Cells[5].Value = "删除";
+            row.Cells[6].Value = "编辑";
+        }
+
+        private Account GetAccountInView(int rowIndex)
+        {
+            string accountName = m_accountListDGV.Rows[rowIndex].Cells[0].Value.ToString();
+            return AccountBook.GetInstance().FindAccount(accountName);
         }
 
         private void m_addAccountBtn_Click(object sender, EventArgs e)
@@ -58,7 +66,7 @@ namespace SwingCardBoard
             var account = addWnd.NewAccount;
 
             account.LastDateTime = Utility.GetCurrentDTString();
-            m_mainwnd.AddAccountStatistics(account);
+            m_mainwnd.AddAccountToView(account);
 
             //
             AddAccountToView(account);
@@ -84,6 +92,48 @@ namespace SwingCardBoard
 
             m_accountListDGV.Rows.Clear();
             m_mainwnd.Reset();
+        }
+
+        private void m_accountListDGV_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
+
+            Account account = GetAccountInView(e.RowIndex);
+
+            // 删除
+            if (e.ColumnIndex == 5)
+            {
+                if (DialogResult.No == MessageBox.Show(this, "删除后不可恢复！确定删除吗？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                {
+                    return;
+                }
+
+                m_accountListDGV.Rows.RemoveAt(e.RowIndex);
+                m_mainwnd.RemoveAccount(account.Name);
+                return;
+            }
+
+            if (e.ColumnIndex == 6)
+            {
+                AddAccountWnd addWnd = new AddAccountWnd(account);
+                if (DialogResult.OK != addWnd.ShowDialog() && addWnd.NewAccount == null)
+                {
+                    return;
+                }
+
+                Account newAccount = addWnd.NewAccount;
+                m_mainwnd.UpdateAccount(newAccount);
+                SetCreditAmount(e.RowIndex, newAccount.CreditAmount);
+                return;
+            }
+        }
+
+        private void SetCreditAmount(int rowIndex, double value)
+        {
+            m_accountListDGV.Rows[rowIndex].Cells[4].Value = value.ToString();
         }
     }
 }

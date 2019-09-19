@@ -7,7 +7,7 @@ using System.Text;
 namespace SwingCardBoard
 {
     // save to csv
-    class AccountDestailsDB
+    class AccountDB
     {
         readonly string m_fileName = @"data\account_status.csv";
 
@@ -15,6 +15,21 @@ namespace SwingCardBoard
         {
             if (File.Exists(m_fileName))
                 File.Delete(m_fileName);
+        }
+
+        public void Remove(string account)
+        {
+            UpdateDB();
+        }
+
+        public void Add(Account account)
+        {
+            UpdateDB();
+        }
+
+        public void Update(Account account)
+        {
+            UpdateDB();
         }
 
         public void Load()
@@ -62,7 +77,7 @@ namespace SwingCardBoard
         }
 
         // update and save to file
-        public void Update()
+        private void UpdateDB()
         {
             StreamWriter writer = new StreamWriter(m_fileName);
 

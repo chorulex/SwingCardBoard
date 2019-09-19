@@ -58,7 +58,7 @@ namespace SwingCardBoard
             if (DialogResult.OK != addWnd.ShowDialog())
                 return;
 
-            m_mainWnd.AddAccountStatistics(addWnd.NewAccount);
+            m_mainWnd.AddAccountToView(addWnd.NewAccount);
             InitAccountList();
         }
 

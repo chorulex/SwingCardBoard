@@ -12,7 +12,7 @@ namespace SwingCardBoard
 {
     public partial class MainWnd : Form
     {
-        private AccountDestailsDB m_accountStatDB = new AccountDestailsDB();
+        private AccountDB m_accountStatDB = new AccountDB();
         private FundChangeHistoryWnd m_fundEventWnd = null;
 
         public MainWnd()
@@ -33,7 +33,7 @@ namespace SwingCardBoard
             SetCurrentTime();
 
             m_accountStatDB.Load();
-            InitAccountStatistics(); 
+            InitAccountView(); 
 
             m_fundEventWnd = new FundChangeHistoryWnd();
             m_fundEventWnd.Hide();
@@ -55,7 +55,7 @@ namespace SwingCardBoard
 
                 account.AddSwing(eventWnd.Amount);
 
-                UpdateAccountStatistics(account);
+                UpdateAccountView(account);
                 m_fundEventWnd.AddFundChangeEvent(new FundEvent(account.Name, eventWnd.Amount, "刷卡", account.LastDateTime));
             }
         }
@@ -69,43 +69,74 @@ namespace SwingCardBoard
                 var account = eventWnd.Account;
                 account.AddRepay(eventWnd.Amount);
 
-                UpdateAccountStatistics(account);
+                UpdateAccountView(account);
                 m_fundEventWnd.AddFundChangeEvent(new FundEvent(account.Name, eventWnd.Amount, "还款", account.LastDateTime));
             }
         }
 
-        private void addCardBtn_Click(object sender, EventArgs e)
-        {
-            AddAccountWnd addWnd = new AddAccountWnd();
-            if (DialogResult.OK != addWnd.ShowDialog() && addWnd.NewAccount == null)
-            {
-                return;
-            }
-
-            addWnd.NewAccount.LastDateTime = Utility.GetCurrentDTString();
-            AddAccountStatistics(addWnd.NewAccount);
-        }
-
         public void Reset()
         {
-            ResetDGV();
+            ResetView();
 
             // history
             m_accountStatDB.Clean();
             m_fundEventWnd.Clean();
         }
 
+        public void RemoveAccount(string account)
+        {
+            AccountBook.GetInstance().Remove(account);
+            ResetView();
+            m_accountStatDB.Remove(account);
+
+            // TODO: 清除资金变动记录
+        }
+
+        public void UpdateAccount(Account account)
+        {
+            UpdateAccountView(account);
+        }
+
         # region 当期账号状态记录
         private int m_totalRowIndex = -1;
 
-        private void ResetDGV()
+        private void ResetView()
         {
             m_totalRowIndex = -1;
             m_accountStatisticsDgv.Rows.Clear();
-            InitAccountStatistics();
+            InitAccountView();
         }
 
-        private void InitAccountStatistics()
+        // TODO: to private replaced with mainWnd.AddAccount()
+        public void AddAccountToView(Account account)
+        {
+            DataGridViewRow row = new DataGridViewRow();
+            row.CreateCells(m_accountStatisticsDgv);
+
+            row.Cells[0].Value = account.Name;
+            row.Cells[1].Value = account.BillStartDay + " - " + account.BillExpiredDay;
+
+            SetAcountAmount(account, row);
+
+            if (m_totalRowIndex != -1)
+            {
+                m_accountStatisticsDgv.Rows.Insert(m_accountStatisticsDgv.Rows.Count - 1, row);
+                m_totalRowIndex++;
+            }
+            else
+            {
+                m_accountStatisticsDgv.Rows.Add(row);
+            }
+
+            m_accountStatDB.Add(account);
+
+            if (m_totalRowIndex != -1)
+            {
+                UpdateTotalAccountView();
+            }
+        }
+
+        private void InitAccountView()
         {
             var font = new Font("微软雅黑", 9f, FontStyle.Regular);
             //billDate.DefaultCellStyle.Font = font;
@@ -130,7 +161,7 @@ namespace SwingCardBoard
             // 
             foreach (var account in AccountBook.GetInstance().GetAccounts())
             {
-                AddAccountStatistics(account);
+                AddAccountToView(account);
             }
 
             InitTotalAccount();
@@ -145,34 +176,6 @@ namespace SwingCardBoard
             }
 
             return -1;
-        }
-
-        public void AddAccountStatistics(Account account)
-        {
-            DataGridViewRow row = new DataGridViewRow();
-            row.CreateCells(m_accountStatisticsDgv);
-
-            row.Cells[0].Value = account.Name;
-            row.Cells[1].Value = account.BillStartDay + " - " + account.BillExpiredDay;
-
-            SetAcountAmount(account, row);
-
-            if (m_totalRowIndex != -1)
-            {
-                m_accountStatisticsDgv.Rows.Insert(m_accountStatisticsDgv.Rows.Count - 1, row);
-                m_totalRowIndex++;
-            }
-            else
-            {
-                m_accountStatisticsDgv.Rows.Add(row);
-            }
-
-            m_accountStatDB.Update();
-
-            if (m_totalRowIndex != -1)
-            {
-                UpdateTotalAccountStatistics();
-            }
         }
 
         private void SetAcountAmount(Account account, DataGridViewRow row)
@@ -199,21 +202,21 @@ namespace SwingCardBoard
             row.Cells[9].Value = account.LastDateTime;
         }
 
-        private void UpdateAccountStatistics(string name)
+        private void UpdateAccountView(string name)
         {
             var account = AccountBook.GetInstance().FindAccount(name);
-            UpdateAccountStatistics(account);
+            UpdateAccountView(account);
         }
 
-        private void UpdateAccountStatistics(Account account)
+        private void UpdateAccountView(Account account)
         {
             int index = GetAccountRow(account.Name);
             var row = m_accountStatisticsDgv.Rows[index];
 
             SetAcountAmount(account, row);
-            UpdateTotalAccountStatistics();
+            UpdateTotalAccountView();
 
-            m_accountStatDB.Update();
+            m_accountStatDB.Update(account);
         }
 
         // 用于更新总计栏
@@ -223,7 +226,7 @@ namespace SwingCardBoard
             SetTotalAccountAmount();
         }
 
-        private void UpdateTotalAccountStatistics()
+        private void UpdateTotalAccountView()
         {
             AccountBook.GetInstance().UpdateTotalAccount();
             SetTotalAccountAmount();
@@ -308,7 +311,7 @@ namespace SwingCardBoard
             if (DialogResult.OK == wnd.ShowDialog())
             {
                 var account = wnd.GetAccount();
-                UpdateAccountStatistics(account.Name);
+                UpdateAccountView(account.Name);
                 m_fundEventWnd.AddFundChangeEvent(new FundEvent(account.Name, account.BillAmount, "账单"));
             }
         }

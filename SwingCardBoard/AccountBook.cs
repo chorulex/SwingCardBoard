@@ -7,6 +7,14 @@ namespace SwingCardBoard
 {
     public class Account
     {
+        // 区分Account的唯一标识
+        private string m_name;
+        public string Name
+        {
+            get { return m_name; }
+            set { m_name = value; }
+        }
+
         // 设置当期账单时的日期
         private string m_billSetDate;
         public string BillSetDate
@@ -30,13 +38,6 @@ namespace SwingCardBoard
         {
             get { return m_lastDateTime; }
             set { m_lastDateTime = value; }
-        }
-
-        private string m_name;
-        public string Name
-        {
-            get { return m_name; }
-            set { m_name = value; }
         }
 
         private string m_number;
@@ -183,6 +184,15 @@ namespace SwingCardBoard
         {
             m_acounts.Clear();
             UpdateTotalAccount();
+        }
+
+        public void Remove(string account)
+        {
+            if (m_acounts.ContainsKey(account))
+            {
+                m_acounts.Remove(account);
+                UpdateTotalAccount();
+            }
         }
 
         public List<Account> GetAccounts()

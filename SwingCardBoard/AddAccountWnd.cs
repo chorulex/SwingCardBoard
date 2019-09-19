@@ -17,25 +17,47 @@ namespace SwingCardBoard
             get { return m_newAccount; }
         }
 
+        // 添加新账号
         public AddAccountWnd()
         {
             InitializeComponent();
-
             this.AcceptButton = applyBtn;
             this.CancelButton = cancelBtn;
-
             this.billExpiredNUD.Maximum = 31;
             this.billExpiredNUD.Minimum = 1;
+            this.Text = "添加新账号";
+        }
+
+        // 编辑更新
+        public AddAccountWnd(Account account)
+        {
+            InitializeComponent();
+            this.AcceptButton = applyBtn;
+            this.CancelButton = cancelBtn;
+            this.billExpiredNUD.Maximum = 31;
+            this.billExpiredNUD.Minimum = 1;
+            this.Text = "修改账号";
+
+            // 账号不可更改！
+            this.m_accountNameTxt.Enabled = false;
+            this.m_accountNameTxt.Text = account.Name;
+            this.expiredDT.Text = account.ExpiredDate;
+            this.billExpiredNUD.Text = account.BillExpiredDay.ToString();
+            this.billStartDayNUD.Text = account.BillStartDay.ToString();
+            this.numberTxt.Text = account.Number;
+            this.creditAmountTxt.Text = account.CreditAmount.ToString();
+
+            m_newAccount = account;
         }
 
         private void applyBtn_Click(object sender, EventArgs e)
         {
             Account account = new Account();
 
-            account.Name = cardNameTxt.Text.Trim();
+            account.Name = m_accountNameTxt.Text.Trim();
             if (string.IsNullOrEmpty(account.Name))
             {
-                MessageBox.Show(this, "请输入账户名称！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "请输入账户名称！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -62,19 +84,47 @@ namespace SwingCardBoard
                 return;
             }
 
-            account.NoRepayAmount = account.BillAmount;
-            if (AccountBook.GetInstance().ExistAccount(account.Name))
+            if (m_newAccount == null)
             {
-                string msg = "账号\"" + account.Name + "\"已经存在，请使用其他的名称！";
-                MessageBox.Show(this, msg , "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                // 新增
+                if (!AddAccount(account))
+                {
+                    return;
+                }
             }
-
-            m_newAccount = account;
-            AccountBook.GetInstance().AddAccount(account);
+            else
+            {
+                // 更新
+                UpdateAccount(account);
+            }
 
             DialogResult = DialogResult.OK;
             this.Close();
+        }
+
+        private void UpdateAccount(Account account)
+        {
+            m_newAccount.Number = account.Number;
+            m_newAccount.ExpiredDate = account.ExpiredDate;
+            m_newAccount.BillExpiredDay = account.BillExpiredDay;
+            m_newAccount.BillStartDay = account.BillStartDay;
+            m_newAccount.CreditAmount = account.CreditAmount;
+            m_newAccount.LastDateTime = Utility.GetCurrentDTString();
+        }
+
+        private bool AddAccount(Account newAccount)
+        {
+            newAccount.NoRepayAmount = newAccount.BillAmount;
+            if (AccountBook.GetInstance().ExistAccount(newAccount.Name))
+            {
+                string msg = "账号\"" + newAccount.Name + "\"已经存在！";
+                MessageBox.Show(this, msg , "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            m_newAccount = newAccount;
+            AccountBook.GetInstance().AddAccount(newAccount);
+            return true;
         }
 
         private void creditAmountTxt_TextChanged(object sender, EventArgs e)

@@ -80,7 +80,7 @@
       <DependentUpon>AddAccountWnd.cs</DependentUpon>
     </Compile>
     <Compile Include="AccountBook.cs" />
-    <Compile Include="AccountDestails.cs" />
+    <Compile Include="AccountDB.cs" />
     <Compile Include="FundChangeHistoryWnd.cs">
       <SubType>Form</SubType>
     </Compile>
