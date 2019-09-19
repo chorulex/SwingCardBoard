@@ -127,20 +127,12 @@ namespace SwingCardBoard
 
                 Account newAccount = addWnd.NewAccount;
                 m_mainwnd.UpdateAccount(newAccount);
-                SetCreditAmount(e.RowIndex, newAccount.CreditAmount);
-                SetRate(e.RowIndex, newAccount.Rate);
+                m_accountListDGV.Rows[e.RowIndex].Cells[2].Value = account.BillStartDay;
+                m_accountListDGV.Rows[e.RowIndex].Cells[3].Value = account.BillExpiredDay;
+                m_accountListDGV.Rows[e.RowIndex].Cells[4].Value = account.CreditAmount.ToString();
+                m_accountListDGV.Rows[e.RowIndex].Cells[5].Value = account.Rate.ToString();
                 return;
             }
-        }
-
-        private void SetCreditAmount(int rowIndex, double value)
-        {
-            m_accountListDGV.Rows[rowIndex].Cells[4].Value = value.ToString();
-        }
-
-        private void SetRate(int rowIndex, double value)
-        {
-            m_accountListDGV.Rows[rowIndex].Cells[5].Value = value.ToString();
         }
     }
 }

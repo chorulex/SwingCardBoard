@@ -157,6 +157,7 @@ namespace SwingCardBoard
 
         private void SetAcountAmount(Account account, DataGridViewRow row)
         {
+            row.Cells[2].Value = account.BillStartDay +"/"+account.BillExpiredDay;
             row.Cells[3].Value = Utility.FormatDoubleString(account.CreditAmount);
             row.Cells[4].Value = Utility.FormatDoubleString(account.AvaliableAmount);
             row.Cells[5].Value = Utility.FormatDoubleString(account.BillAmount);
