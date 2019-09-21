@@ -82,6 +82,12 @@
     <Compile Include="AccountBook.cs" />
     <Compile Include="AccountDB.cs" />
     <Compile Include="BillDB.cs" />
+    <Compile Include="BillHistoryWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BillHistoryWnd.Designer.cs">
+      <DependentUpon>BillHistoryWnd.cs</DependentUpon>
+    </Compile>
     <Compile Include="FundChangeHistoryWnd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,6 +124,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddAccountWnd.resx">
       <DependentUpon>AddAccountWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BillHistoryWnd.resx">
+      <DependentUpon>BillHistoryWnd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FundChangeHistoryWnd.resx">
       <DependentUpon>FundChangeHistoryWnd.cs</DependentUpon>

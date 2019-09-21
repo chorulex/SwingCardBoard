@@ -108,7 +108,12 @@ namespace SwingCardBoard
                 row.SubItems.Add(eve.Account);
                 row.SubItems.Add(eve.Type);
                 row.SubItems.Add(eve.Amount.ToString());
-                row.SubItems.Add(eve.Charge.ToString());
+
+                if (eve.Type != "刷卡")
+                    row.SubItems.Add("- ");
+                else
+                    row.SubItems.Add(eve.Charge.ToString());
+
                 row.SubItems.Add(eve.DateTime);
                 m_fundChangeLV.Items.Add(row);
 
@@ -133,6 +138,7 @@ namespace SwingCardBoard
             if (node.Level == 1)
             {
                 m_currentAccount = GetAccountName(node);
+                m_currentYearMonth = "";
                 ShowAccountFundEvents();
             }
             else if (node.Level == 2)

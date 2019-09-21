@@ -35,7 +35,7 @@ namespace SwingCardBoard
 
             m_accountBD.Load();
             m_billDB.Load();
-            InitAccountView();
+            InitBillView();
 
             LoadAccountSwingEvent();
         }
@@ -87,8 +87,8 @@ namespace SwingCardBoard
         private void ResetView()
         {
             m_totalRowIndex = -1;
-            m_accountStatisticsDgv.Rows.Clear();
-            InitAccountView();
+            m_billDgv.Rows.Clear();
+            InitBillView();
         }
 
         public void AddAccountBillToView(Account account)
@@ -99,13 +99,13 @@ namespace SwingCardBoard
             BillBook.GetInstance().Add(bill);
             m_billDB.Add(bill);
 
-            AddAccountToView(bill);
+            AddAccountBillToView(bill);
         }
 
-        private void AddAccountToView(AccountBill bill)
+        private void AddAccountBillToView(AccountBill bill)
         {
             DataGridViewRow row = new DataGridViewRow();
-            row.CreateCells(m_accountStatisticsDgv);
+            row.CreateCells(m_billDgv);
 
             row.Cells[0].Value = bill.Account.Name;
             row.Cells[1].Value = Utility.FormatDateString(bill.LastBillStart) + " - " + Utility.FormatDateString(bill.LastBillEnd);
@@ -115,21 +115,21 @@ namespace SwingCardBoard
 
             if (m_totalRowIndex != -1)
             {
-                m_accountStatisticsDgv.Rows.Insert(m_accountStatisticsDgv.Rows.Count - 1, row);
+                m_billDgv.Rows.Insert(m_billDgv.Rows.Count - 1, row);
                 m_totalRowIndex++;
             }
             else
             {
-                m_accountStatisticsDgv.Rows.Add(row);
+                m_billDgv.Rows.Add(row);
             }
 
             if (m_totalRowIndex != -1)
             {
-                UpdateTotalAccountView();
+                UpdateTotalAccountBillView();
             }
         }
 
-        private void InitAccountView()
+        private void InitBillView()
         {
             var font = new Font("微软雅黑", 9f, FontStyle.Regular);
 
@@ -168,15 +168,15 @@ namespace SwingCardBoard
             chargeColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
             // 禁止排序
-            for (int i = 0; i < m_accountStatisticsDgv.Columns.Count; i++)
+            for (int i = 0; i < m_billDgv.Columns.Count; i++)
             {
-                m_accountStatisticsDgv.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                m_billDgv.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
             }
 
             // 
             foreach (var account in BillBook.GetInstance().GetAll())
             {
-                AddAccountToView(account);
+                AddAccountBillToView(account);
             }
 
             InitTotalAccount();
@@ -184,9 +184,9 @@ namespace SwingCardBoard
 
         private int GetAccountBillRow(string account)
         {
-            for (int i = 0; i < m_accountStatisticsDgv.Rows.Count; i++)
+            for (int i = 0; i < m_billDgv.Rows.Count; i++)
             {
-                if (m_accountStatisticsDgv.Rows[i].Cells[0].Value.ToString() == account)
+                if (m_billDgv.Rows[i].Cells[0].Value.ToString() == account)
                     return i;
             }
 
@@ -236,10 +236,10 @@ namespace SwingCardBoard
         private void UpdateAccountBillView(AccountBill bill)
         {
             int index = GetAccountBillRow(bill.Account.Name);
-            var row = m_accountStatisticsDgv.Rows[index];
+            var row = m_billDgv.Rows[index];
 
             SetAcountBillAmount(bill, row);
-            UpdateTotalAccountView();
+            UpdateTotalAccountBillView();
 
             m_billDB.Update(bill);
         }
@@ -247,11 +247,11 @@ namespace SwingCardBoard
         // 用于更新总计栏
         private void InitTotalAccount()
         {
-            m_totalRowIndex = m_accountStatisticsDgv.Rows.Add();
+            m_totalRowIndex = m_billDgv.Rows.Add();
             SetTotalAccountAmount();
         }
 
-        private void UpdateTotalAccountView()
+        private void UpdateTotalAccountBillView()
         {
             BillBook.GetInstance().UpdateTotal();
             SetTotalAccountAmount();
@@ -261,7 +261,7 @@ namespace SwingCardBoard
         {
             var font = new Font("微软雅黑", 9.5f, FontStyle.Bold);
 
-            var row = m_accountStatisticsDgv.Rows[m_totalRowIndex];
+            var row = m_billDgv.Rows[m_totalRowIndex];
             var bill = BillBook.GetInstance().TotalAccount;
 
             row.Cells[0].Value = bill.Account.Name;
@@ -287,7 +287,7 @@ namespace SwingCardBoard
         {
             if (e.ColumnIndex == 8 && e.RowIndex >= 0 && e.RowIndex != m_totalRowIndex)
             {
-                var row = m_accountStatisticsDgv.Rows[e.RowIndex];
+                var row = m_billDgv.Rows[e.RowIndex];
                 string accountName = row.Cells[0].Value.ToString();
 
                 row.Cells[e.ColumnIndex].ToolTipText = null;
@@ -382,6 +382,13 @@ namespace SwingCardBoard
             }
         }
 
+        // 查看往期账单
+        private void m_historyBillBtn_Click(object sender, EventArgs e)
+        {
+            BillHistoryWnd wnd = new BillHistoryWnd();
+            wnd.ShowDialog();
+        }
+
         private void 账号管理ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             AccountManageWnd wnd = new AccountManageWnd(this);
@@ -423,5 +430,6 @@ namespace SwingCardBoard
             wnd.ShowDialog();
         }
         #endregion
+
     }
 }

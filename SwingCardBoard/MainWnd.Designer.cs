@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.takeSwingBtn = new System.Windows.Forms.Button();
-            this.m_accountStatisticsDgv = new System.Windows.Forms.DataGridView();
+            this.m_billDgv = new System.Windows.Forms.DataGridView();
             this.accountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.billDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.repayDayColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -52,13 +52,14 @@
             this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_dateLblabel1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.m_accountStatisticsDgv)).BeginInit();
+            this.m_historyBillBtn = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.m_billDgv)).BeginInit();
             this.m_menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // takeSwingBtn
             // 
-            this.takeSwingBtn.Location = new System.Drawing.Point(12, 28);
+            this.takeSwingBtn.Location = new System.Drawing.Point(335, 26);
             this.takeSwingBtn.Name = "takeSwingBtn";
             this.takeSwingBtn.Size = new System.Drawing.Size(133, 23);
             this.takeSwingBtn.TabIndex = 0;
@@ -68,14 +69,14 @@
             // 
             // m_accountStatisticsDgv
             // 
-            this.m_accountStatisticsDgv.AllowUserToAddRows = false;
-            this.m_accountStatisticsDgv.AllowUserToDeleteRows = false;
-            this.m_accountStatisticsDgv.AllowUserToResizeRows = false;
-            this.m_accountStatisticsDgv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.m_billDgv.AllowUserToAddRows = false;
+            this.m_billDgv.AllowUserToDeleteRows = false;
+            this.m_billDgv.AllowUserToResizeRows = false;
+            this.m_billDgv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_accountStatisticsDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.m_accountStatisticsDgv.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.m_billDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.m_billDgv.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.accountColumn,
             this.billDate,
             this.repayDayColumn,
@@ -88,16 +89,16 @@
             this.chargeColumn,
             this.stat,
             this.lastEventDT});
-            this.m_accountStatisticsDgv.Location = new System.Drawing.Point(12, 57);
-            this.m_accountStatisticsDgv.MultiSelect = false;
-            this.m_accountStatisticsDgv.Name = "m_accountStatisticsDgv";
-            this.m_accountStatisticsDgv.ReadOnly = true;
-            this.m_accountStatisticsDgv.RowHeadersVisible = false;
-            this.m_accountStatisticsDgv.RowTemplate.Height = 23;
-            this.m_accountStatisticsDgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.m_accountStatisticsDgv.Size = new System.Drawing.Size(1184, 406);
-            this.m_accountStatisticsDgv.TabIndex = 3;
-            this.m_accountStatisticsDgv.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_accountStatisticsDgv_CellMouseEnter);
+            this.m_billDgv.Location = new System.Drawing.Point(12, 57);
+            this.m_billDgv.MultiSelect = false;
+            this.m_billDgv.Name = "m_accountStatisticsDgv";
+            this.m_billDgv.ReadOnly = true;
+            this.m_billDgv.RowHeadersVisible = false;
+            this.m_billDgv.RowTemplate.Height = 23;
+            this.m_billDgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.m_billDgv.Size = new System.Drawing.Size(1184, 406);
+            this.m_billDgv.TabIndex = 3;
+            this.m_billDgv.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_accountStatisticsDgv_CellMouseEnter);
             // 
             // accountColumn
             // 
@@ -184,7 +185,7 @@
             // 
             // m_repayBtn
             // 
-            this.m_repayBtn.Location = new System.Drawing.Point(151, 28);
+            this.m_repayBtn.Location = new System.Drawing.Point(474, 26);
             this.m_repayBtn.Name = "m_repayBtn";
             this.m_repayBtn.Size = new System.Drawing.Size(125, 23);
             this.m_repayBtn.TabIndex = 6;
@@ -262,20 +263,33 @@
             this.m_dateLblabel1.AutoSize = true;
             this.m_dateLblabel1.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.m_dateLblabel1.ForeColor = System.Drawing.Color.Green;
-            this.m_dateLblabel1.Location = new System.Drawing.Point(282, 30);
+            this.m_dateLblabel1.Location = new System.Drawing.Point(174, 29);
             this.m_dateLblabel1.Name = "m_dateLblabel1";
             this.m_dateLblabel1.Size = new System.Drawing.Size(65, 19);
             this.m_dateLblabel1.TabIndex = 9;
             this.m_dateLblabel1.Text = "当前年月";
+            // 
+            // m_historyBillBtn
+            // 
+            this.m_historyBillBtn.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.m_historyBillBtn.ForeColor = System.Drawing.Color.Green;
+            this.m_historyBillBtn.Location = new System.Drawing.Point(12, 26);
+            this.m_historyBillBtn.Name = "m_historyBillBtn";
+            this.m_historyBillBtn.Size = new System.Drawing.Size(156, 23);
+            this.m_historyBillBtn.TabIndex = 10;
+            this.m_historyBillBtn.Text = "查看往期账单";
+            this.m_historyBillBtn.UseVisualStyleBackColor = true;
+            this.m_historyBillBtn.Click += new System.EventHandler(this.m_historyBillBtn_Click);
             // 
             // MainWnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1208, 476);
+            this.Controls.Add(this.m_historyBillBtn);
             this.Controls.Add(this.m_dateLblabel1);
             this.Controls.Add(this.m_repayBtn);
-            this.Controls.Add(this.m_accountStatisticsDgv);
+            this.Controls.Add(this.m_billDgv);
             this.Controls.Add(this.takeSwingBtn);
             this.Controls.Add(this.m_menuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -284,7 +298,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "养卡记";
             this.Load += new System.EventHandler(this.MainWnd_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.m_accountStatisticsDgv)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_billDgv)).EndInit();
             this.m_menuStrip.ResumeLayout(false);
             this.m_menuStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -295,9 +309,10 @@
         #endregion
 
         private System.Windows.Forms.Button takeSwingBtn;
-        private System.Windows.Forms.DataGridView m_accountStatisticsDgv;
         private System.Windows.Forms.Button m_repayBtn;
+        private System.Windows.Forms.Button m_historyBillBtn;
         private System.Windows.Forms.MenuStrip m_menuStrip;
+        private System.Windows.Forms.Label m_dateLblabel1;
         private System.Windows.Forms.ToolStripMenuItem 账号管理ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 资金变动历史ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 账号管理ToolStripMenuItem1;
@@ -305,7 +320,6 @@
         private System.Windows.Forms.ToolStripMenuItem 关于ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 资金变动历史ToolStripMenuItem1;
-        private System.Windows.Forms.Label m_dateLblabel1;
         private System.Windows.Forms.DataGridViewTextBoxColumn accountColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn billDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn repayDayColumn;
@@ -318,6 +332,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn chargeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn stat;
         private System.Windows.Forms.DataGridViewTextBoxColumn lastEventDT;
+        private System.Windows.Forms.DataGridView m_billDgv;
     }
 }
 

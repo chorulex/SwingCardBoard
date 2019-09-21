@@ -132,15 +132,16 @@ namespace SwingCardBoard
             SaveToDB(bill);
         }
 
-        // TODO: 暂时用不到，下个版本
-        public void Load()
+        public List<AccountBill> Load()
         {
+            List<AccountBill> bills = new List<AccountBill>();
+
             if (!File.Exists(m_fileName))
-                return;
+                return bills;
 
             StreamReader reader = new StreamReader(m_fileName);
             if (reader == null)
-                return;
+                return bills;
 
             reader.ReadLine();
             while (!reader.EndOfStream)
@@ -148,11 +149,9 @@ namespace SwingCardBoard
                 string line = reader.ReadLine();
                 string[] items = line.Split(',');
 
-                // bind account
-                string accountName = items[0];
-                Account account = AccountBook.GetInstance().Find(accountName);
-                AccountBill bill = new AccountBill(account);
-
+                AccountBill bill = new AccountBill();
+                bill.Account.Name = items[0];
+                bill.Account.CreditAmount = double.Parse(items[1]);
                 bill.LastBillStart = DateTime.Parse(items[2]);
                 bill.LastBillEnd = DateTime.Parse(items[3]);
                 bill.AvaliableAmount = double.Parse(items[4]);
@@ -164,10 +163,11 @@ namespace SwingCardBoard
                 bill.LastDateTime = items[10];
                 bill.Charge = double.Parse(items[11]);
 
-                //BillBook.GetInstance().Add(bill);
+                bills.Add(bill);
             }
 
             reader.Close();
+            return bills;
         }
 
         // update and save to file
