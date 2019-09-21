@@ -177,17 +177,17 @@ namespace SwingCardBoard
 
             row.Cells[0].Value = bill.Account.Name;
             row.Cells[0].Style.Font = font;
-            row.Cells[2].Value = Utility.FormatDoubleString(bill.Account.CreditAmount);
+            row.Cells[2].Value = Utility.ConvertDouble(bill.Account.CreditAmount);
             row.Cells[2].Style.Font = font;
-            row.Cells[3].Value = Utility.FormatDoubleString(bill.AvaliableAmount);
+            row.Cells[3].Value = Utility.ConvertDouble(bill.AvaliableAmount);
             row.Cells[3].Style.Font = font;
-            row.Cells[4].Value = Utility.FormatDoubleString(bill.BillAmount);
+            row.Cells[4].Value = Utility.ConvertDouble(bill.BillAmount);
             row.Cells[4].Style.Font = font;
-            row.Cells[5].Value = Utility.FormatDoubleString(bill.RepayAmount);
+            row.Cells[5].Value = Utility.ConvertDouble(bill.RepayAmount);
             row.Cells[5].Style.Font = font;
-            row.Cells[6].Value = Utility.FormatDoubleString(bill.NoRepayAmount);
+            row.Cells[6].Value = Utility.ConvertDouble(bill.NoRepayAmount);
             row.Cells[6].Style.Font = font;
-            row.Cells[7].Value = Utility.FormatDoubleString(bill.SwingAmount);
+            row.Cells[7].Value = Utility.ConvertDouble(bill.SwingAmount);
             row.Cells[7].Style.Font = font;
             row.Cells[8].Value = bill.Charge.ToString();
             row.Cells[8].Style.Font = font;
@@ -245,12 +245,12 @@ namespace SwingCardBoard
         private void SetAcountBillAmount(AccountBill bill, DataGridViewRow row)
         {
             row.Cells[1].Value = Utility.FormatDateString(bill.LastBillStart) + " - " + Utility.FormatDateString(bill.LastBillEnd);
-            row.Cells[2].Value = Utility.FormatDoubleString(bill.Account.CreditAmount);
-            row.Cells[3].Value = Utility.FormatDoubleString(bill.AvaliableAmount);
-            row.Cells[4].Value = Utility.FormatDoubleString(bill.BillAmount);
-            row.Cells[5].Value = Utility.FormatDoubleString(bill.RepayAmount);
-            row.Cells[6].Value = Utility.FormatDoubleString(bill.NoRepayAmount);
-            row.Cells[7].Value = Utility.FormatDoubleString(bill.SwingAmount);
+            row.Cells[2].Value = Utility.ConvertDouble(bill.Account.CreditAmount);
+            row.Cells[3].Value = Utility.ConvertDouble(bill.AvaliableAmount);
+            row.Cells[4].Value = Utility.ConvertDouble(bill.BillAmount);
+            row.Cells[5].Value = Utility.ConvertDouble(bill.RepayAmount);
+            row.Cells[6].Value = Utility.ConvertDouble(bill.NoRepayAmount);
+            row.Cells[7].Value = Utility.ConvertDouble(bill.SwingAmount);
             row.Cells[8].Value = bill.Charge.ToString();
 
             // 已还清

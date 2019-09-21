@@ -95,6 +95,12 @@
       <DependentUpon>FundChangeHistoryWnd.cs</DependentUpon>
     </Compile>
     <Compile Include="FundEvents.cs" />
+    <Compile Include="LoginWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginWnd.Designer.cs">
+      <DependentUpon>LoginWnd.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainWnd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +136,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FundChangeHistoryWnd.resx">
       <DependentUpon>FundChangeHistoryWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginWnd.resx">
+      <DependentUpon>LoginWnd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainWnd.resx">
       <DependentUpon>MainWnd.cs</DependentUpon>

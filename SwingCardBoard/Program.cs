@@ -15,6 +15,15 @@ namespace SwingCardBoard
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            /*
+            LoginWnd login = new LoginWnd();
+            if (login.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+            */
+
             Application.Run(new MainWnd());
         }
     }

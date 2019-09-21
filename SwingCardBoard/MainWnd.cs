@@ -197,12 +197,12 @@ namespace SwingCardBoard
         {
             row.Cells[1].Value = Utility.FormatDateString(bill.LastBillStart) + " - " + Utility.FormatDateString(bill.LastBillEnd);
             row.Cells[2].Value = bill.Account.BillStartDay + "/" + bill.Account.BillExpiredDay;
-            row.Cells[3].Value = Utility.FormatDoubleString(bill.Account.CreditAmount);
-            row.Cells[4].Value = Utility.FormatDoubleString(bill.AvaliableAmount);
-            row.Cells[5].Value = Utility.FormatDoubleString(bill.BillAmount);
-            row.Cells[6].Value = Utility.FormatDoubleString(bill.RepayAmount);
-            row.Cells[7].Value = Utility.FormatDoubleString(bill.NoRepayAmount);
-            row.Cells[8].Value = Utility.FormatDoubleString(bill.SwingAmount);
+            row.Cells[3].Value = Utility.ConvertDouble(bill.Account.CreditAmount);
+            row.Cells[4].Value = Utility.ConvertDouble(bill.AvaliableAmount);
+            row.Cells[5].Value = Utility.ConvertDouble(bill.BillAmount);
+            row.Cells[6].Value = Utility.ConvertDouble(bill.RepayAmount);
+            row.Cells[7].Value = Utility.ConvertDouble(bill.NoRepayAmount);
+            row.Cells[8].Value = Utility.ConvertDouble(bill.SwingAmount);
             row.Cells[9].Value = bill.Charge.ToString();
 
             // 已还清
@@ -266,17 +266,17 @@ namespace SwingCardBoard
 
             row.Cells[0].Value = bill.Account.Name;
             row.Cells[0].Style.Font = font;
-            row.Cells[3].Value = Utility.FormatDoubleString(bill.Account.CreditAmount);
+            row.Cells[3].Value = Utility.ConvertDouble(bill.Account.CreditAmount);
             row.Cells[3].Style.Font = font;
-            row.Cells[4].Value = Utility.FormatDoubleString(bill.AvaliableAmount);
+            row.Cells[4].Value = Utility.ConvertDouble(bill.AvaliableAmount);
             row.Cells[4].Style.Font = font;
-            row.Cells[5].Value = Utility.FormatDoubleString(bill.BillAmount);
+            row.Cells[5].Value = Utility.ConvertDouble(bill.BillAmount);
             row.Cells[5].Style.Font = font;
-            row.Cells[6].Value = Utility.FormatDoubleString(bill.RepayAmount);
+            row.Cells[6].Value = Utility.ConvertDouble(bill.RepayAmount);
             row.Cells[6].Style.Font = font;
-            row.Cells[7].Value = Utility.FormatDoubleString(bill.NoRepayAmount);
+            row.Cells[7].Value = Utility.ConvertDouble(bill.NoRepayAmount);
             row.Cells[7].Style.Font = font;
-            row.Cells[8].Value = Utility.FormatDoubleString(bill.SwingAmount);
+            row.Cells[8].Value = Utility.ConvertDouble(bill.SwingAmount);
             row.Cells[8].Style.Font = font;
             row.Cells[9].Value = bill.Charge.ToString();
             row.Cells[9].Style.Font = font;
@@ -309,12 +309,12 @@ namespace SwingCardBoard
             int times = 0;
             foreach (var eve in events)
             {
-                tip += (++times).ToString() + "  " + eve.DateTime + ": " + Utility.FormatDoubleString(eve.Amount) + "元\r\n";
+                tip += (++times).ToString() + "  " + eve.DateTime + ": " + Utility.ConvertDouble(eve.Amount) + "元\r\n";
                 total += eve.Amount;
             }
 
             tip += "--------------------------------------\r\n";
-            tip += "总计:                            " + Utility.FormatDoubleString(total) + "元";
+            tip += "总计:                            " + Utility.ConvertDouble(total) + "元";
 
             return tip;
         }

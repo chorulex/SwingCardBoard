@@ -144,7 +144,7 @@ namespace SwingCardBoard
             }
             else
             {
-                m_billAmountTxt.Text = Utility.FormatDoubleString(account.CreditAmount - double.Parse(origin));
+                m_billAmountTxt.Text = Utility.ConvertDouble(account.CreditAmount - double.Parse(origin));
             }
         }
 

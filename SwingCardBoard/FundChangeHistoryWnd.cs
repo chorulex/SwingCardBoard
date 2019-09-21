@@ -107,12 +107,12 @@ namespace SwingCardBoard
                 row.Text = (m_fundChangeLV.Items.Count + 1).ToString();
                 row.SubItems.Add(eve.Account);
                 row.SubItems.Add(eve.Type);
-                row.SubItems.Add(eve.Amount.ToString());
+                row.SubItems.Add(Utility.ConvertDouble(eve.Amount));
 
                 if (eve.Type != "刷卡")
                     row.SubItems.Add("- ");
                 else
-                    row.SubItems.Add(eve.Charge.ToString());
+                    row.SubItems.Add(Utility.ConvertDouble(eve.Charge));
 
                 row.SubItems.Add(eve.DateTime);
                 m_fundChangeLV.Items.Add(row);

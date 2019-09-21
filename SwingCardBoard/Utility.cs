@@ -28,6 +28,11 @@ namespace SwingCardBoard
             return dt.ToLocalTime().ToShortDateString();
         }
 
+        public static string ConvertDouble(double origin)
+        {
+            return origin.ToString("N2");
+        }
+
         public static string FormatDoubleString(double origin)
         {
             return FormatDoubleString(origin.ToString());

@@ -74,8 +74,8 @@ namespace SwingCardBoard
             m_cardNumTxt.Text = Utility.FormatAccountString(bill.Account.Number);
             m_rateLb.Text = "刷卡手续费率：" + bill.Account.Rate.ToString();
 
-            m_noRepayAmountTxt.Text = Utility.FormatDoubleString(bill.NoRepayAmount);
-            m_avaliableAmountTxt.Text = Utility.FormatDoubleString(bill.AvaliableAmount);
+            m_noRepayAmountTxt.Text = Utility.ConvertDouble(bill.NoRepayAmount);
+            m_avaliableAmountTxt.Text = Utility.ConvertDouble(bill.AvaliableAmount);
         }
 
         private void m_cardComb_SelectedIndexChanged(object sender, EventArgs e)
@@ -126,8 +126,7 @@ namespace SwingCardBoard
                 return;
             }
 
-            double origin = double.Parse(Utility.ConvertToOrigin(m_amoutTxt.Text));
-            m_amoutTxt.Text = Utility.FormatDoubleString(origin);
+            m_amoutTxt.Text = Utility.FormatDoubleString(Utility.ConvertToOrigin(m_amoutTxt.Text));
             Utility.SetSelectToLastest(m_amoutTxt);
 
             if (m_withdraw)
@@ -135,6 +134,7 @@ namespace SwingCardBoard
                 var bill = BillBook.GetInstance().Find(m_accountComb.SelectedItem.ToString());
                 if (bill != null)
                 {
+                    double origin = double.Parse(Utility.ConvertToOrigin(m_amoutTxt.Text));
                     m_chargeTxt.Text = (origin * bill.Account.Rate).ToString();
                 }
             }
@@ -143,12 +143,18 @@ namespace SwingCardBoard
         // 仅允许输入数值，且小数点后只能保留两位
         private void m_amoutTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
-            Utility.CheckTextBoxKeyPress(m_amoutTxt, sender, e);
+            Utility.CheckTextBoxKeyPress(m_amoutTxt, sender, e,2);
         }
 
         private void m_chargeTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
-            Utility.CheckTextBoxKeyPress(m_amoutTxt, sender, e, 4);
+            Utility.CheckTextBoxKeyPress(m_chargeTxt, sender, e, 4);
+        }
+
+        private void m_chargeTxt_TextChanged(object sender, EventArgs e)
+        {
+            m_chargeTxt.Text = Utility.FormatDoubleString(Utility.ConvertToOrigin(m_chargeTxt.Text.Trim()));
+            Utility.SetSelectToLastest(m_chargeTxt);
         }
     }
 }

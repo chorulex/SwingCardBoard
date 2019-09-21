@@ -77,12 +77,12 @@
             this.m_cardNumTxt.Size = new System.Drawing.Size(186, 21);
             this.m_cardNumTxt.TabIndex = 2;
             // 
-            // m_cardComb
+            // m_accountComb
             // 
             this.m_accountComb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_accountComb.FormattingEnabled = true;
             this.m_accountComb.Location = new System.Drawing.Point(111, 26);
-            this.m_accountComb.Name = "m_cardComb";
+            this.m_accountComb.Name = "m_accountComb";
             this.m_accountComb.Size = new System.Drawing.Size(186, 20);
             this.m_accountComb.TabIndex = 3;
             this.m_accountComb.SelectedIndexChanged += new System.EventHandler(this.m_cardComb_SelectedIndexChanged);
@@ -213,6 +213,7 @@
             this.m_chargeTxt.Name = "m_chargeTxt";
             this.m_chargeTxt.Size = new System.Drawing.Size(139, 21);
             this.m_chargeTxt.TabIndex = 13;
+            this.m_chargeTxt.TextChanged += new System.EventHandler(this.m_chargeTxt_TextChanged);
             this.m_chargeTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.m_chargeTxt_KeyPress);
             // 
             // label10

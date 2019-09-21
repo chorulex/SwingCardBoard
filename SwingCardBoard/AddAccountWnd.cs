@@ -142,7 +142,7 @@ namespace SwingCardBoard
 
         private void m_rateTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
-            Utility.CheckTextBoxKeyPress(creditAmountTxt, sender, e, 4);
+            Utility.CheckTextBoxKeyPress(m_rateTxt, sender, e, 4);
         }
 
         private void numberTxt_TextChanged(object sender, EventArgs e)
