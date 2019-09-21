@@ -11,10 +11,10 @@ namespace SwingCardBoard
 {
     public partial class SetAccountBillWnd : Form
     {
-        private Account m_account = null;
-        public Account GetAccount()
+        private AccountBill m_bill = null;
+        public AccountBill Bill
         {
-            return m_account;
+            get { return m_bill; }
         }
 
         private MainWnd m_mainWnd = null;
@@ -31,10 +31,11 @@ namespace SwingCardBoard
 
         private void InitAccountList()
         {
-            if (AccountBook.GetInstance().AccountCount == 0)
+            if (AccountBook.GetInstance().Count == 0)
                 return;
 
-            m_accountComb.Items.AddRange(AccountBook.GetInstance().GetAccountNameList().ToArray());
+            m_accountComb.Items.Clear();
+            m_accountComb.Items.AddRange(AccountBook.GetInstance().GetAllAccountName().ToArray());
 
             if (m_accountComb.Items.Count > 0)
             {
@@ -58,10 +59,10 @@ namespace SwingCardBoard
                 return;
             }
 
-            double bill = 0.0;
+            double billVal = 0.0;
             try
             {
-                bill = double.Parse(m_billAmountTxt.Text.Trim());
+                billVal = double.Parse(m_billAmountTxt.Text.Trim());
             }
             catch (Exception ex)
             {
@@ -80,17 +81,17 @@ namespace SwingCardBoard
                 return;
             }
 
-            var account = AccountBook.GetInstance().FindAccount(name);
-            if (account == null)
+            var bill = BillBook.GetInstance().Find(name);
+            if (bill == null)
             {
                 MessageBox.Show(this, "账号不存在！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            account.LastDateTime = Utility.GetCurrentDTString();
-            account.AvaliableAmount = avaliable;
-            account.SetBillAmount(bill);
-            m_account = account;
+            bill.LastDateTime = Utility.GetCurrentDTString();
+            bill.AvaliableAmount = avaliable;
+            bill.SetBillAmount(billVal);
+            m_bill = bill;
 
             DialogResult = DialogResult.OK;
             this.Close();
@@ -103,7 +104,7 @@ namespace SwingCardBoard
 
         private void SetCardNumber(int selectedIndex)
         {
-            m_cardNumberTxt.Text = AccountBook.GetInstance().GetAccounts()[selectedIndex].Number;
+            m_cardNumberTxt.Text = BillBook.GetInstance().GetAll()[selectedIndex].Account.Number;
         }
 
         private void m_initLab_Click(object sender, EventArgs e)
@@ -112,7 +113,7 @@ namespace SwingCardBoard
             if (DialogResult.OK != addWnd.ShowDialog())
                 return;
 
-            m_mainWnd.AddAccountToView(addWnd.NewAccount);
+            m_mainWnd.AddAccountBillToView(addWnd.NewAccount);
             InitAccountList();
         }
 

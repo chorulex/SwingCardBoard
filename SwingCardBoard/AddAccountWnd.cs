@@ -80,7 +80,6 @@ namespace SwingCardBoard
             try
             {
                 account.CreditAmount = double.Parse(amountStr);
-                account.AvaliableAmount = account.CreditAmount;
             }
             catch (Exception ex)
             {
@@ -113,14 +112,12 @@ namespace SwingCardBoard
             m_newAccount.BillExpiredDay = account.BillExpiredDay;
             m_newAccount.BillStartDay = account.BillStartDay;
             m_newAccount.CreditAmount = account.CreditAmount;
-            m_newAccount.LastDateTime = Utility.GetCurrentDTString();
             m_newAccount.Rate = account.Rate;
         }
 
         private bool AddAccount(Account newAccount)
         {
-            newAccount.NoRepayAmount = newAccount.BillAmount;
-            if (AccountBook.GetInstance().ExistAccount(newAccount.Name))
+            if (AccountBook.GetInstance().Exist(newAccount.Name))
             {
                 string msg = "账号\"" + newAccount.Name + "\"已经存在！";
                 MessageBox.Show(this, msg , "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -128,7 +125,7 @@ namespace SwingCardBoard
             }
 
             m_newAccount = newAccount;
-            AccountBook.GetInstance().AddAccount(newAccount);
+            AccountBook.GetInstance().Add(newAccount);
             return true;
         }
 

@@ -12,7 +12,8 @@ namespace SwingCardBoard
 {
     public partial class MainWnd : Form
     {
-        private AccountDB m_accountStatDB = new AccountDB();
+        private AccountBillDB m_billDB = new AccountBillDB();
+        private AccountDB m_accountBD = new AccountDB();
         private FundChangeHistoryWnd m_fundEventWnd = null;
 
         public MainWnd()
@@ -32,8 +33,9 @@ namespace SwingCardBoard
 
             SetCurrentTime();
 
-            m_accountStatDB.Load();
-            InitAccountView(); 
+            m_accountBD.Load();
+            m_billDB.Load();
+            InitAccountView();
 
             m_fundEventWnd = new FundChangeHistoryWnd();
             m_fundEventWnd.Hide();
@@ -51,22 +53,23 @@ namespace SwingCardBoard
             ResetView();
 
             // history
-            m_accountStatDB.Clean();
+            m_billDB.Clean();
             m_fundEventWnd.Clean();
         }
 
         public void RemoveAccount(string account)
         {
-            AccountBook.GetInstance().Remove(account);
+            BillBook.GetInstance().Remove(account);
             ResetView();
-            m_accountStatDB.Remove(account);
+            m_billDB.Remove(account);
 
             // TODO: 清除资金变动记录
         }
 
         public void UpdateAccount(Account account)
         {
-            UpdateAccountView(account);
+            m_accountBD.Update(account);
+            UpdateAccountBillView(account);
         }
 
         # region 当期账号状态记录
@@ -79,17 +82,27 @@ namespace SwingCardBoard
             InitAccountView();
         }
 
-        // TODO: to private replaced with mainWnd.AddAccount()
-        public void AddAccountToView(Account account)
+        public void AddAccountBillToView(Account account)
+        {
+            m_accountBD.Add(account);
+
+            AccountBill bill = new AccountBill(account);
+            BillBook.GetInstance().Add(bill);
+            m_billDB.Add(bill);
+
+            AddAccountToView(bill);
+        }
+
+        private void AddAccountToView(AccountBill bill)
         {
             DataGridViewRow row = new DataGridViewRow();
             row.CreateCells(m_accountStatisticsDgv);
 
-            row.Cells[0].Value = account.Name;
-            row.Cells[1].Value = account.LastBillStart.ToShortDateString() + " - " + account.LastBillEnd.ToShortDateString();
-            row.Cells[2].Value = account.BillStartDay +"/"+account.BillExpiredDay;
+            row.Cells[0].Value = bill.Account.Name;
+            row.Cells[1].Value = bill.LastBillStart.ToShortDateString() + " - " + bill.LastBillEnd.ToShortDateString();
+            row.Cells[2].Value = bill.Account.BillStartDay + "/" + bill.Account.BillExpiredDay;
 
-            SetAcountAmount(account, row);
+            SetAcountBillAmount(bill, row);
 
             if (m_totalRowIndex != -1)
             {
@@ -100,8 +113,6 @@ namespace SwingCardBoard
             {
                 m_accountStatisticsDgv.Rows.Add(row);
             }
-
-            m_accountStatDB.Add(account);
 
             if (m_totalRowIndex != -1)
             {
@@ -119,14 +130,17 @@ namespace SwingCardBoard
 
             creditAmount.DefaultCellStyle.Font = font;
             creditAmount.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            creditAmount.DefaultCellStyle.BackColor = Color.AntiqueWhite;
 
             avaliableAmount.DefaultCellStyle.Font = font;
             avaliableAmount.DefaultCellStyle.ForeColor = Color.Green;
             avaliableAmount.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            avaliableAmount.DefaultCellStyle.BackColor = Color.Azure;
 
             billAmount.DefaultCellStyle.Font = font;
             billAmount.DefaultCellStyle.ForeColor = Color.Red;
             billAmount.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            billAmount.DefaultCellStyle.BackColor = Color.BlanchedAlmond;
 
             repayAmount.DefaultCellStyle.Font = font;
             repayAmount.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
@@ -151,7 +165,7 @@ namespace SwingCardBoard
             }
 
             // 
-            foreach (var account in AccountBook.GetInstance().GetAccounts())
+            foreach (var account in BillBook.GetInstance().GetAll())
             {
                 AddAccountToView(account);
             }
@@ -159,7 +173,7 @@ namespace SwingCardBoard
             InitTotalAccount();
         }
 
-        private int GetAccountRow(string account)
+        private int GetAccountBillRow(string account)
         {
             for (int i = 0; i < m_accountStatisticsDgv.Rows.Count; i++)
             {
@@ -170,19 +184,19 @@ namespace SwingCardBoard
             return -1;
         }
 
-        private void SetAcountAmount(Account account, DataGridViewRow row)
+        private void SetAcountBillAmount(AccountBill bill, DataGridViewRow row)
         {
-            row.Cells[2].Value = account.BillStartDay +"/"+account.BillExpiredDay;
-            row.Cells[3].Value = Utility.FormatDoubleString(account.CreditAmount);
-            row.Cells[4].Value = Utility.FormatDoubleString(account.AvaliableAmount);
-            row.Cells[5].Value = Utility.FormatDoubleString(account.BillAmount);
-            row.Cells[6].Value = Utility.FormatDoubleString(account.RepayAmount);
-            row.Cells[7].Value = Utility.FormatDoubleString(account.NoRepayAmount);
-            row.Cells[8].Value = Utility.FormatDoubleString(account.SwingAmount);
-            row.Cells[9].Value =account.Charge.ToString();
+            row.Cells[2].Value = bill.Account.BillStartDay + "/" + bill.Account.BillExpiredDay;
+            row.Cells[3].Value = Utility.FormatDoubleString(bill.Account.CreditAmount);
+            row.Cells[4].Value = Utility.FormatDoubleString(bill.AvaliableAmount);
+            row.Cells[5].Value = Utility.FormatDoubleString(bill.BillAmount);
+            row.Cells[6].Value = Utility.FormatDoubleString(bill.RepayAmount);
+            row.Cells[7].Value = Utility.FormatDoubleString(bill.NoRepayAmount);
+            row.Cells[8].Value = Utility.FormatDoubleString(bill.SwingAmount);
+            row.Cells[9].Value = bill.Charge.ToString();
 
             // 已还清
-            if (account.NoRepayAmount - 0.0 <= 0.000001)
+            if (bill.isRepayAll)
             {
                 row.Cells[10].Value = "本期已还清";
                 row.Cells[10].Style.ForeColor = Color.Green;
@@ -193,24 +207,31 @@ namespace SwingCardBoard
                 row.Cells[10].Style.ForeColor = Color.Red;
             }
 
-            row.Cells[11].Value = account.LastDateTime;
+            row.Cells[11].Value = bill.LastDateTime;
         }
 
-        private void UpdateAccountView(string name)
+        private void UpdateAccountBillView(string name)
         {
-            var account = AccountBook.GetInstance().FindAccount(name);
-            UpdateAccountView(account);
+            var account = BillBook.GetInstance().Find(name);
+            UpdateAccountBillView(account);
         }
 
-        private void UpdateAccountView(Account account)
+        private void UpdateAccountBillView(Account account)
         {
-            int index = GetAccountRow(account.Name);
+            var bill = BillBook.GetInstance().Find(account.Name);
+            bill.Account = account;
+            UpdateAccountBillView(bill);
+        }
+
+        private void UpdateAccountBillView(AccountBill bill)
+        {
+            int index = GetAccountBillRow(bill.Account.Name);
             var row = m_accountStatisticsDgv.Rows[index];
 
-            SetAcountAmount(account, row);
+            SetAcountBillAmount(bill, row);
             UpdateTotalAccountView();
 
-            m_accountStatDB.Update(account);
+            m_billDB.Update(bill);
         }
 
         // 用于更新总计栏
@@ -222,7 +243,7 @@ namespace SwingCardBoard
 
         private void UpdateTotalAccountView()
         {
-            AccountBook.GetInstance().UpdateTotalAccount();
+            BillBook.GetInstance().UpdateTotal();
             SetTotalAccountAmount();
         }
 
@@ -231,23 +252,23 @@ namespace SwingCardBoard
             var font = new Font("微软雅黑", 9.5f, FontStyle.Bold);
 
             var row = m_accountStatisticsDgv.Rows[m_totalRowIndex];
-            var account = AccountBook.GetInstance().TotalAccount;
+            var bill = BillBook.GetInstance().TotalAccount;
 
-            row.Cells[0].Value = account.Name;
+            row.Cells[0].Value = bill.Account.Name;
             row.Cells[0].Style.Font = font;
-            row.Cells[3].Value = Utility.FormatDoubleString(account.CreditAmount);
+            row.Cells[3].Value = Utility.FormatDoubleString(bill.Account.CreditAmount);
             row.Cells[3].Style.Font = font;
-            row.Cells[4].Value = Utility.FormatDoubleString(account.AvaliableAmount);
+            row.Cells[4].Value = Utility.FormatDoubleString(bill.AvaliableAmount);
             row.Cells[4].Style.Font = font;
-            row.Cells[5].Value = Utility.FormatDoubleString(account.BillAmount);
+            row.Cells[5].Value = Utility.FormatDoubleString(bill.BillAmount);
             row.Cells[5].Style.Font = font;
-            row.Cells[6].Value = Utility.FormatDoubleString(account.RepayAmount);
+            row.Cells[6].Value = Utility.FormatDoubleString(bill.RepayAmount);
             row.Cells[6].Style.Font = font;
-            row.Cells[7].Value = Utility.FormatDoubleString(account.NoRepayAmount);
+            row.Cells[7].Value = Utility.FormatDoubleString(bill.NoRepayAmount);
             row.Cells[7].Style.Font = font;
-            row.Cells[8].Value = Utility.FormatDoubleString(account.SwingAmount);
+            row.Cells[8].Value = Utility.FormatDoubleString(bill.SwingAmount);
             row.Cells[8].Style.Font = font;
-            row.Cells[9].Value = account.Charge.ToString();
+            row.Cells[9].Value = bill.Charge.ToString();
             row.Cells[9].Style.Font = font;
         }
 
@@ -261,7 +282,7 @@ namespace SwingCardBoard
 
                 row.Cells[e.ColumnIndex].ToolTipText = null;
 
-                var account = AccountBook.GetInstance().FindAccount(accountName);
+                var account = BillBook.GetInstance().Find(accountName);
                 if (account.SwingEvents.Count != 0)
                 {
                     row.Cells[e.ColumnIndex].ToolTipText = GenerateTipString(account.SwingEvents);
@@ -287,20 +308,24 @@ namespace SwingCardBoard
 
             return tip;
         }
-
         # endregion
 
+        # region wnd event
         // 记录一笔刷卡记录
         private void takeNoteBtn_Click(object sender, EventArgs e)
         {
             AccountFundEventWnd eventWnd = new AccountFundEventWnd(this, "刷卡");
             if (DialogResult.OK == eventWnd.ShowDialog())
             {
-                var account = eventWnd.Account;
+                var accountName = eventWnd.AccountName;
+                var dt = Utility.GetCurrentDTString();
 
-                account.AddSwing(eventWnd.Amount, eventWnd.Charge);
-                UpdateAccountView(account);
-                m_fundEventWnd.AddFundChangeEvent(new FundEvent(account.Name, eventWnd.Amount, eventWnd.Charge, "刷卡", account.LastDateTime));
+                var bill = BillBook.GetInstance().Find(accountName);
+                bill.AddSwing(eventWnd.Amount, eventWnd.Charge);
+                bill.LastDateTime = dt;
+                UpdateAccountBillView(bill);
+
+                m_fundEventWnd.AddFundChangeEvent(new FundEvent(accountName, eventWnd.Amount, eventWnd.Charge, "刷卡", dt));
             }
         }
 
@@ -310,11 +335,14 @@ namespace SwingCardBoard
             AccountFundEventWnd eventWnd = new AccountFundEventWnd(this, "还卡");
             if (DialogResult.OK == eventWnd.ShowDialog())
             {
-                var account = eventWnd.Account;
-                account.AddRepay(eventWnd.Amount);
+                var accountName = eventWnd.AccountName;
+                var dt = Utility.GetCurrentDTString();
 
-                UpdateAccountView(account);
-                m_fundEventWnd.AddFundChangeEvent(new FundEvent(account.Name, eventWnd.Amount,0, "还款", account.LastDateTime));
+                var bill = BillBook.GetInstance().Find(accountName);
+                bill.AddRepay(eventWnd.Amount);
+
+                UpdateAccountBillView(bill);
+                m_fundEventWnd.AddFundChangeEvent(new FundEvent(accountName, eventWnd.Amount, 0, "还款", dt));
             }
         }
 
@@ -334,9 +362,9 @@ namespace SwingCardBoard
             SetAccountBillWnd wnd = new SetAccountBillWnd(this);
             if (DialogResult.OK == wnd.ShowDialog())
             {
-                var account = wnd.GetAccount();
-                UpdateAccountView(account.Name);
-                m_fundEventWnd.AddFundChangeEvent(new FundEvent(account.Name, account.BillAmount, "账单"));
+                var bill = wnd.Bill;
+                UpdateAccountBillView(bill.Account.Name);
+                m_fundEventWnd.AddFundChangeEvent(new FundEvent(bill.Account.Name, bill.BillAmount, "账单"));
             }
         }
 
@@ -345,5 +373,6 @@ namespace SwingCardBoard
             AboutWnd wnd = new AboutWnd();
             wnd.ShowDialog();
         }
+        #endregion
     }
 }

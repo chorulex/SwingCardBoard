@@ -30,16 +30,6 @@
         {
             this.takeSwingBtn = new System.Windows.Forms.Button();
             this.m_accountStatisticsDgv = new System.Windows.Forms.DataGridView();
-            this.m_repayBtn = new System.Windows.Forms.Button();
-            this.m_menuStrip = new System.Windows.Forms.MenuStrip();
-            this.账号管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.账号管理ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.设置当期账单ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.资金变动历史ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.资金变动历史ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_dateLblabel1 = new System.Windows.Forms.Label();
             this.accountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.billDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.repayDayColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -52,6 +42,16 @@
             this.chargeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.stat = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lastEventDT = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_repayBtn = new System.Windows.Forms.Button();
+            this.m_menuStrip = new System.Windows.Forms.MenuStrip();
+            this.账号管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.账号管理ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.设置当期账单ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.资金变动历史ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.资金变动历史ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_dateLblabel1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.m_accountStatisticsDgv)).BeginInit();
             this.m_menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -94,9 +94,93 @@
             this.m_accountStatisticsDgv.ReadOnly = true;
             this.m_accountStatisticsDgv.RowHeadersVisible = false;
             this.m_accountStatisticsDgv.RowTemplate.Height = 23;
+            this.m_accountStatisticsDgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.m_accountStatisticsDgv.Size = new System.Drawing.Size(1184, 406);
             this.m_accountStatisticsDgv.TabIndex = 3;
             this.m_accountStatisticsDgv.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_accountStatisticsDgv_CellMouseEnter);
+            // 
+            // accountColumn
+            // 
+            this.accountColumn.HeaderText = "银行卡/账号";
+            this.accountColumn.Name = "accountColumn";
+            this.accountColumn.ReadOnly = true;
+            this.accountColumn.Width = 110;
+            // 
+            // billDate
+            // 
+            this.billDate.HeaderText = "账单日期";
+            this.billDate.Name = "billDate";
+            this.billDate.ReadOnly = true;
+            this.billDate.Width = 160;
+            // 
+            // repayDayColumn
+            // 
+            this.repayDayColumn.HeaderText = "账/还";
+            this.repayDayColumn.Name = "repayDayColumn";
+            this.repayDayColumn.ReadOnly = true;
+            this.repayDayColumn.Width = 55;
+            // 
+            // creditAmount
+            // 
+            this.creditAmount.HeaderText = "信用额度";
+            this.creditAmount.Name = "creditAmount";
+            this.creditAmount.ReadOnly = true;
+            this.creditAmount.Width = 90;
+            // 
+            // avaliableAmount
+            // 
+            this.avaliableAmount.HeaderText = "可用额度";
+            this.avaliableAmount.Name = "avaliableAmount";
+            this.avaliableAmount.ReadOnly = true;
+            this.avaliableAmount.Width = 90;
+            // 
+            // billAmount
+            // 
+            this.billAmount.HeaderText = "账单金额";
+            this.billAmount.Name = "billAmount";
+            this.billAmount.ReadOnly = true;
+            this.billAmount.Width = 90;
+            // 
+            // repayAmount
+            // 
+            this.repayAmount.HeaderText = "已还金额";
+            this.repayAmount.Name = "repayAmount";
+            this.repayAmount.ReadOnly = true;
+            this.repayAmount.Width = 90;
+            // 
+            // norepayAmount
+            // 
+            this.norepayAmount.HeaderText = "未还金额";
+            this.norepayAmount.Name = "norepayAmount";
+            this.norepayAmount.ReadOnly = true;
+            this.norepayAmount.Width = 90;
+            // 
+            // swingAmount
+            // 
+            this.swingAmount.HeaderText = "刷卡合计";
+            this.swingAmount.Name = "swingAmount";
+            this.swingAmount.ReadOnly = true;
+            this.swingAmount.Width = 90;
+            // 
+            // chargeColumn
+            // 
+            this.chargeColumn.HeaderText = "手续费合计";
+            this.chargeColumn.Name = "chargeColumn";
+            this.chargeColumn.ReadOnly = true;
+            this.chargeColumn.Width = 85;
+            // 
+            // stat
+            // 
+            this.stat.HeaderText = "还款状态";
+            this.stat.Name = "stat";
+            this.stat.ReadOnly = true;
+            // 
+            // lastEventDT
+            // 
+            this.lastEventDT.HeaderText = "最近操作时间";
+            this.lastEventDT.Name = "lastEventDT";
+            this.lastEventDT.ReadOnly = true;
+            this.lastEventDT.Width = 130;
             // 
             // m_repayBtn
             // 
@@ -183,89 +267,6 @@
             this.m_dateLblabel1.Size = new System.Drawing.Size(65, 19);
             this.m_dateLblabel1.TabIndex = 9;
             this.m_dateLblabel1.Text = "当前年月";
-            // 
-            // accountColumn
-            // 
-            this.accountColumn.HeaderText = "银行卡/账号";
-            this.accountColumn.Name = "accountColumn";
-            this.accountColumn.ReadOnly = true;
-            this.accountColumn.Width = 110;
-            // 
-            // billDate
-            // 
-            this.billDate.HeaderText = "账单日期";
-            this.billDate.Name = "billDate";
-            this.billDate.ReadOnly = true;
-            this.billDate.Width = 160;
-            // 
-            // repayDayColumn
-            // 
-            this.repayDayColumn.HeaderText = "账/还";
-            this.repayDayColumn.Name = "repayDayColumn";
-            this.repayDayColumn.ReadOnly = true;
-            this.repayDayColumn.Width = 55;
-            // 
-            // creditAmount
-            // 
-            this.creditAmount.HeaderText = "信用额度";
-            this.creditAmount.Name = "creditAmount";
-            this.creditAmount.ReadOnly = true;
-            this.creditAmount.Width = 90;
-            // 
-            // avaliableAmount
-            // 
-            this.avaliableAmount.HeaderText = "可用额度";
-            this.avaliableAmount.Name = "avaliableAmount";
-            this.avaliableAmount.ReadOnly = true;
-            this.avaliableAmount.Width = 90;
-            // 
-            // billAmount
-            // 
-            this.billAmount.HeaderText = "账单金额";
-            this.billAmount.Name = "billAmount";
-            this.billAmount.ReadOnly = true;
-            this.billAmount.Width = 90;
-            // 
-            // repayAmount
-            // 
-            this.repayAmount.HeaderText = "已还金额";
-            this.repayAmount.Name = "repayAmount";
-            this.repayAmount.ReadOnly = true;
-            this.repayAmount.Width = 90;
-            // 
-            // norepayAmount
-            // 
-            this.norepayAmount.HeaderText = "未还金额";
-            this.norepayAmount.Name = "norepayAmount";
-            this.norepayAmount.ReadOnly = true;
-            this.norepayAmount.Width = 90;
-            // 
-            // swingAmount
-            // 
-            this.swingAmount.HeaderText = "刷卡合计";
-            this.swingAmount.Name = "swingAmount";
-            this.swingAmount.ReadOnly = true;
-            this.swingAmount.Width = 90;
-            // 
-            // chargeColumn
-            // 
-            this.chargeColumn.HeaderText = "手续费合计";
-            this.chargeColumn.Name = "chargeColumn";
-            this.chargeColumn.ReadOnly = true;
-            this.chargeColumn.Width = 85;
-            // 
-            // stat
-            // 
-            this.stat.HeaderText = "还款状态";
-            this.stat.Name = "stat";
-            this.stat.ReadOnly = true;
-            // 
-            // lastEventDT
-            // 
-            this.lastEventDT.HeaderText = "最近操作时间";
-            this.lastEventDT.Name = "lastEventDT";
-            this.lastEventDT.ReadOnly = true;
-            this.lastEventDT.Width = 130;
             // 
             // MainWnd
             // 

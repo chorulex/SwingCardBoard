@@ -31,7 +31,7 @@
             this.m_applyBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.m_cardNumTxt = new System.Windows.Forms.TextBox();
-            this.m_cardComb = new System.Windows.Forms.ComboBox();
+            this.m_accountComb = new System.Windows.Forms.ComboBox();
             this.m_cancelBtn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -79,13 +79,13 @@
             // 
             // m_cardComb
             // 
-            this.m_cardComb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.m_cardComb.FormattingEnabled = true;
-            this.m_cardComb.Location = new System.Drawing.Point(111, 26);
-            this.m_cardComb.Name = "m_cardComb";
-            this.m_cardComb.Size = new System.Drawing.Size(186, 20);
-            this.m_cardComb.TabIndex = 3;
-            this.m_cardComb.SelectedIndexChanged += new System.EventHandler(this.m_cardComb_SelectedIndexChanged);
+            this.m_accountComb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_accountComb.FormattingEnabled = true;
+            this.m_accountComb.Location = new System.Drawing.Point(111, 26);
+            this.m_accountComb.Name = "m_cardComb";
+            this.m_accountComb.Size = new System.Drawing.Size(186, 20);
+            this.m_accountComb.TabIndex = 3;
+            this.m_accountComb.SelectedIndexChanged += new System.EventHandler(this.m_cardComb_SelectedIndexChanged);
             // 
             // m_cancelBtn
             // 
@@ -254,7 +254,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.m_cancelBtn);
-            this.Controls.Add(this.m_cardComb);
+            this.Controls.Add(this.m_accountComb);
             this.Controls.Add(this.m_cardNumTxt);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.m_applyBtn);
@@ -274,7 +274,7 @@
         private System.Windows.Forms.Button m_applyBtn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox m_cardNumTxt;
-        private System.Windows.Forms.ComboBox m_cardComb;
+        private System.Windows.Forms.ComboBox m_accountComb;
         private System.Windows.Forms.Button m_cancelBtn;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;

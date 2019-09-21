@@ -31,7 +31,7 @@ namespace SwingCardBoard
             creditAmount.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             rateColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-            foreach (var account in AccountBook.GetInstance().GetAccounts())
+            foreach (var account in AccountBook.GetInstance().GetAll())
             {
                 AddAccountToView(account);
             }
@@ -44,8 +44,8 @@ namespace SwingCardBoard
 
             row.Cells[0].Value = account.Name;
             row.Cells[1].Value = account.Number;
-            row.Cells[2].Value = account.BillStartDay;
-            row.Cells[3].Value = account.BillExpiredDay;
+            row.Cells[2].Value = account.ExpiredDate;
+            row.Cells[3].Value = account.BillStartDay+"/"+account.BillExpiredDay;
             row.Cells[4].Value = account.CreditAmount.ToString();
             row.Cells[5].Value = account.Rate.ToString();
             row.Cells[6].Value = "删除";
@@ -55,7 +55,7 @@ namespace SwingCardBoard
         private Account GetAccountInView(int rowIndex)
         {
             string accountName = m_accountListDGV.Rows[rowIndex].Cells[0].Value.ToString();
-            return AccountBook.GetInstance().FindAccount(accountName);
+            return AccountBook.GetInstance().Find(accountName);
         }
 
         private void m_addAccountBtn_Click(object sender, EventArgs e)
@@ -66,13 +66,8 @@ namespace SwingCardBoard
                 return;
             }
 
-            var account = addWnd.NewAccount;
-
-            account.LastDateTime = Utility.GetCurrentDTString();
-            m_mainwnd.AddAccountToView(account);
-
-            //
-            AddAccountToView(account);
+            m_mainwnd.AddAccountBillToView(addWnd.NewAccount);
+            AddAccountToView(addWnd.NewAccount);
         }
 
         private void m_applyBtn_Click(object sender, EventArgs e)
@@ -91,7 +86,7 @@ namespace SwingCardBoard
 
         private void CleanAccounts()
         {
-            AccountBook.GetInstance().RemoveAll();
+            BillBook.GetInstance().RemoveAll();
 
             m_accountListDGV.Rows.Clear();
             m_mainwnd.Reset();
@@ -128,11 +123,12 @@ namespace SwingCardBoard
                 }
 
                 Account newAccount = addWnd.NewAccount;
-                m_mainwnd.UpdateAccount(newAccount);
-                m_accountListDGV.Rows[e.RowIndex].Cells[2].Value = account.BillStartDay;
-                m_accountListDGV.Rows[e.RowIndex].Cells[3].Value = account.BillExpiredDay;
+                m_accountListDGV.Rows[e.RowIndex].Cells[2].Value = account.ExpiredDate;
+                m_accountListDGV.Rows[e.RowIndex].Cells[3].Value = account.BillStartDay + "/" + account.BillExpiredDay;
                 m_accountListDGV.Rows[e.RowIndex].Cells[4].Value = account.CreditAmount.ToString();
                 m_accountListDGV.Rows[e.RowIndex].Cells[5].Value = account.Rate.ToString();
+
+                m_mainwnd.UpdateAccount(newAccount);
                 return;
             }
         }

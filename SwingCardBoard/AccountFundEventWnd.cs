@@ -11,27 +11,14 @@ namespace SwingCardBoard
 {
     public partial class AccountFundEventWnd : Form
     {
-        private Account m_account = null;
-        public Account Account
-        {
-            get { return m_account; }
-        }
-        private double m_amount = 0.0;
-        public double Amount
-        {
-            get { return m_amount; }
-        }
-
+        public string AccountName { get; set; }
         // 刷卡手续费，仅在刷卡时有效！
-        private double m_charge = 0.0;
-        public double Charge
-        {
-            get { return m_charge; }
-        }
-
-        private bool m_withdraw = false;
+        public double Charge { get; set; }
+        public double Amount{get;set;}
 
         private MainWnd m_mainWnd = null;
+        private bool m_withdraw = false;
+
         public AccountFundEventWnd(MainWnd mainWnd, string eventName)
         {
             InitializeComponent();
@@ -48,6 +35,7 @@ namespace SwingCardBoard
 
             this.AcceptButton = m_applyBtn;
             this.CancelButton = m_cancelBtn;
+            this.m_chargeTxt.Text = "0.0";
 
             m_mainWnd = mainWnd;
             InitAccountList();
@@ -55,16 +43,17 @@ namespace SwingCardBoard
 
         private void InitAccountList()
         {
-            if (AccountBook.GetInstance().AccountCount == 0)
+            if (AccountBook.GetInstance().Count == 0)
             {
                 return;
             }
 
-            m_cardComb.Items.AddRange(AccountBook.GetInstance().GetAccountNameList().ToArray());
+            m_accountComb.Items.Clear();
+            m_accountComb.Items.AddRange(AccountBook.GetInstance().GetAllAccountName().ToArray());
 
-            if (m_cardComb.Items.Count > 0)
+            if (m_accountComb.Items.Count > 0)
             {
-                m_cardComb.SelectedIndex = 0;
+                m_accountComb.SelectedIndex = 0;
                 SetCardNumber(0);
             }
         }
@@ -75,34 +64,34 @@ namespace SwingCardBoard
             if (DialogResult.OK != addWnd.ShowDialog())
                 return;
 
-            m_mainWnd.AddAccountToView(addWnd.NewAccount);
+            m_mainWnd.AddAccountBillToView(addWnd.NewAccount);
             InitAccountList();
         }
 
         private void SetCardNumber(int selectedIndex)
         {
-            var account = AccountBook.GetInstance().GetAccounts()[selectedIndex];
-            m_cardNumTxt.Text = account.Number;
-            m_rateLb.Text = "刷卡手续费率：" + account.Rate.ToString();
+            var bill = BillBook.GetInstance().GetAll()[selectedIndex];
+            m_cardNumTxt.Text = bill.Account.Number;
+            m_rateLb.Text = "刷卡手续费率：" + bill.Account.Rate.ToString();
 
-            m_noRepayAmountTxt.Text = Utility.FormatDoubleString(account.NoRepayAmount);
-            m_avaliableAmountTxt.Text = Utility.FormatDoubleString(account.AvaliableAmount);
+            m_noRepayAmountTxt.Text = Utility.FormatDoubleString(bill.NoRepayAmount);
+            m_avaliableAmountTxt.Text = Utility.FormatDoubleString(bill.AvaliableAmount);
         }
 
         private void m_cardComb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SetCardNumber(m_cardComb.SelectedIndex);
+            SetCardNumber(m_accountComb.SelectedIndex);
         }
 
         private void applyBtn_Click(object sender, EventArgs e)
         {
-            if (m_cardComb.SelectedIndex == -1)
+            if (m_accountComb.SelectedIndex == -1)
             {
                 MessageBox.Show(this, "请先选择一个信用卡/账号，如果没有请先添加一个！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var name = m_cardComb.SelectedItem.ToString();
+            var name = m_accountComb.SelectedItem.ToString();
             if (string.IsNullOrEmpty(name))
             {
                 MessageBox.Show(this, "请先选择一个信用卡/账号，如果没有请先添加一个！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -120,11 +109,9 @@ namespace SwingCardBoard
                 return;
             }
 
-            var account = AccountBook.GetInstance().FindAccount(name);
-            account.LastDateTime = Utility.GetCurrentDTString();
-            m_account = account;
-            m_amount = bill;
-            m_charge = double.Parse(m_chargeTxt.Text);
+            AccountName = name;
+            Amount = bill;
+            Charge = double.Parse(m_chargeTxt.Text);
 
             DialogResult = DialogResult.OK;
             this.Close();
@@ -145,10 +132,10 @@ namespace SwingCardBoard
 
             if (m_withdraw)
             {
-                var account = AccountBook.GetInstance().FindAccount(m_cardComb.SelectedItem.ToString());
-                if (account != null)
+                var bill = BillBook.GetInstance().Find(m_accountComb.SelectedItem.ToString());
+                if (bill != null)
                 {
-                    m_chargeTxt.Text = (origin * account.Rate).ToString();
+                    m_chargeTxt.Text = (origin * bill.Account.Rate).ToString();
                 }
             }
         }
