@@ -146,7 +146,7 @@ namespace SwingCardBoard
                 AccountBill bill = new AccountBill(account);
 
                 bill.LastBillStart = DateTime.Parse(items[2]);
-                bill.LastBillStart = DateTime.Parse(items[3]);
+                bill.LastBillEnd = DateTime.Parse(items[3]);
                 bill.AvaliableAmount = double.Parse(items[4]);
                 bill.BillAmount = double.Parse(items[5]);
                 bill.RepayAmount = double.Parse(items[6]);

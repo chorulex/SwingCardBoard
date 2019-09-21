@@ -28,6 +28,43 @@ namespace SwingCardBoard
             return FormatDoubleString(origin.ToString());
         }
 
+        /// <summary>
+        /// 根据账单出账日，算出上一个账单的日期区间
+        /// </summary>
+        /// <param name="billStartDay"></param>
+        /// <param name="lastBillStart"></param>
+        /// <param name="lastBillEnd"></param>
+        public static void CalcLastBillDruction(int billStartDay, ref DateTime lastBillStart, ref DateTime lastBillEnd)
+        {
+            DateTime now = DateTime.Now.ToLocalTime();
+            if (now.Day <= billStartDay)
+            {
+                if (now.Month - 1 == 0)
+                {
+                    lastBillEnd = new DateTime(now.Year - 1, 12, billStartDay);
+                }
+                else
+                {
+                    lastBillEnd = new DateTime(now.Year, now.Month - 1, billStartDay);
+                }
+            }
+            else
+            {
+                lastBillEnd = new DateTime(now.Year, now.Month, billStartDay);
+            }
+
+            if (lastBillEnd.Month - 1 == 0)
+            {
+                lastBillStart = new DateTime(now.Year - 1, 12, billStartDay);
+            }
+            else
+            {
+                lastBillStart = new DateTime(now.Year, lastBillEnd.Month -1 , billStartDay);
+            }
+            lastBillStart = lastBillStart.AddDays(1);
+        }
+
+
         // 1000 -> 1,000
         public static string FormatDoubleString(string origin)
         {

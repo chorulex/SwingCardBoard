@@ -42,7 +42,12 @@ namespace SwingCardBoard
             set
             {
                 m_account = value;
-                CalcLastBillDruction();
+
+                var lastBillStart = new DateTime();
+                var lastBillEnd = new DateTime();
+                Utility.CalcLastBillDruction(Account.BillStartDay, ref lastBillStart, ref lastBillEnd);
+                LastBillEnd = lastBillEnd;
+                LastBillStart = lastBillStart;
             }
         }
 
@@ -68,38 +73,9 @@ namespace SwingCardBoard
         /// </summary>
         public string LastDateTime { get;set;}
 
-        // 计算出该账户上一期账单时间范围
+        // 该账户上一期账单时间范围
         public DateTime LastBillEnd { get; set; }
         public DateTime LastBillStart { get; set; }
-        public void CalcLastBillDruction()
-        {
-            DateTime now = DateTime.Now.ToLocalTime();
-            if (now.Day <= m_account.BillStartDay)
-            {
-                if (now.Month - 1 == 0)
-                {
-                    LastBillEnd = new DateTime(now.Year - 1, 12, m_account.BillStartDay);
-                }
-                else
-                {
-                    LastBillEnd = new DateTime(now.Year, now.Month - 1, m_account.BillStartDay);
-                }
-            }
-            else
-            {
-                LastBillEnd = new DateTime(now.Year, now.Month, m_account.BillStartDay);
-            }
-
-            if (LastBillEnd.Month - 1 == 0)
-            {
-                LastBillStart = new DateTime(now.Year - 1, 12, m_account.BillStartDay);
-            }
-            else
-            {
-                LastBillStart = new DateTime(now.Year, LastBillEnd.Month -1 , m_account.BillStartDay);
-            }
-            LastBillStart = LastBillStart.AddDays(1);
-        }
 
         // 可用金额
         public double AvaliableAmount {get; set;}
