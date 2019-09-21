@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.m_descriptionTxt = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.m_versionLbl = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -43,14 +43,14 @@
             this.m_descriptionTxt.Size = new System.Drawing.Size(274, 83);
             this.m_descriptionTxt.TabIndex = 0;
             // 
-            // label1
+            // m_versionLbl
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 116);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(77, 12);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "版本：v0.2.0";
+            this.m_versionLbl.AutoSize = true;
+            this.m_versionLbl.Location = new System.Drawing.Point(23, 116);
+            this.m_versionLbl.Name = "m_versionLbl";
+            this.m_versionLbl.Size = new System.Drawing.Size(77, 12);
+            this.m_versionLbl.TabIndex = 1;
+            this.m_versionLbl.Text = "版本：v0.2.0";
             // 
             // label2
             // 
@@ -68,7 +68,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(326, 160);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.m_versionLbl);
             this.Controls.Add(this.m_descriptionTxt);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -85,7 +85,7 @@
         #endregion
 
         private System.Windows.Forms.TextBox m_descriptionTxt;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label m_versionLbl;
         private System.Windows.Forms.Label label2;
     }
 }

@@ -7,6 +7,8 @@ namespace SwingCardBoard
 {
     static class Program
     {
+        public static  readonly string Version = "1.0.0";
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -16,13 +18,11 @@ namespace SwingCardBoard
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            /*
             LoginWnd login = new LoginWnd();
             if (login.ShowDialog() != DialogResult.OK)
             {
                 return;
             }
-            */
 
             Application.Run(new MainWnd());
         }

@@ -13,6 +13,13 @@ namespace SwingCardBoard
         }
 
         # region common
+        public static string EncodeUserPwd(string pwd)
+        {
+            System.Security.Cryptography.MD5 md = new System.Security.Cryptography.MD5CryptoServiceProvider();
+            byte[] output = md.ComputeHash(Encoding.Default.GetBytes(pwd));
+            return BitConverter.ToString(output).Replace("-", "");
+        }
+
         public static string GetCurrentDTString()
         {
             return FormatDateTimeString(DateTime.Now);
