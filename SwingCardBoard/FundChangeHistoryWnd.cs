@@ -11,58 +11,77 @@ namespace SwingCardBoard
 {
     public partial class FundChangeHistoryWnd : Form
     {
+        private string m_currentAccount = "";
+        private string m_currentEventType = "所有";
+        private string m_currentYearMonth = "";
+
         public FundChangeHistoryWnd()
         {
             InitializeComponent();
 
-            InitFundChangeEventView();
+            m_eventTypeComb.Items.Add("所有");
+            m_eventTypeComb.Items.Add("刷卡");
+            m_eventTypeComb.Items.Add("还款");
+            m_eventTypeComb.SelectedIndex = 0;
+
+            LoadAccountEvents();
+            InitAccountView();
         }
 
         public void Clean()
         {
-            m_fundEventDB.Clean();
-            m_accountGroup.Clear();
+            m_fundEventDB.Clear();
             m_fundChangeLV.Clear();
+        }
+
+        void InitAccountView()
+        {
+            var root = m_accountTreeView.Nodes.Add("账号");
+
+            var accounts = AccountBook.GetInstance().GetAll();
+            foreach (var account in accounts)
+            {
+                var text = account.Name;
+                text += " (卡号：" + account.Number + ")";
+                var node = root.Nodes.Add(text);
+
+                if (m_events.ContainsKey(account.Name))
+                {
+                    var dates = GetAccountEventsDateList(m_events[account.Name]);
+                    if (dates != null && dates.Count > 0)
+                    {
+                        foreach (var date in dates)
+                        {
+                            node.Nodes.Add(date);
+                        }
+                    }
+                }
+            }
+        }
+
+        List<string> GetAccountEventsDateList(List<FundEvent> events)
+        {
+            if (events == null || events.Count == 0)
+                return null;
+
+            List<string> dates = new List<string>();
+            foreach (var eve in events)
+            {
+                var date = eve.DateTime.Substring(0, 7); // 1900-01
+                if (!dates.Contains(date))
+                    dates.Add(date);
+            }
+
+            return dates;
         }
 
         #region 资金变动事件表
         HistoryFundEventDB m_fundEventDB = new HistoryFundEventDB();
-        Dictionary<string, ListViewGroup> m_accountGroup = new Dictionary<string, ListViewGroup>();
-        void InitFundChangeEventView()
+        Dictionary<string, List<FundEvent>> m_events = null;
+
+        void LoadAccountEvents()
         {
-            m_fundChangeLV.ShowGroups = true;
-
-            var events = m_fundEventDB.Load();
-            if (events == null || events.Count == 0)
-            {
-                return;
-            }
-
-            InitFundChangeGroupWithAccount(events);
-
-            foreach (var eve in events)
-            {
-                AddFundChangeEventToListView(eve);
-            }
-        }
-
-        void InitFundChangeGroupWithAccount(List<FundEvent> events)
-        {
-            foreach (var eve in events)
-            {
-                if (!m_accountGroup.ContainsKey(eve.Account))
-                {
-                    AddFundChangeGroup(eve.Account);
-                }
-
-                var account = BillBook.GetInstance().Find(eve.Account);
-                if (account != null 
-                    && eve.Type == "刷卡" 
-                    && eve.DateTime.CompareTo(Utility.FormatDateString(account.LastBillEnd)) >= 0)
-                {
-                    SaveToAccountCurrentSwingEvents(eve);
-                }
-            }
+            m_events = m_fundEventDB.Load(AccountBook.GetInstance().GetAllAccountName());
         }
 
         void SaveToAccountCurrentSwingEvents(FundEvent eve)
@@ -72,64 +91,113 @@ namespace SwingCardBoard
                 account.SwingEvents.Add(eve);
         }
 
-        ListViewGroup AddFundChangeGroup(string account)
-        {
-            ListViewGroup group = new ListViewGroup();
-
-            group.Header = account;
-            group.HeaderAlignment = HorizontalAlignment.Left;
-
-            columnHeader3.TextAlign = HorizontalAlignment.Right;
-            columnHeader6.TextAlign = HorizontalAlignment.Right;
-
-            m_fundChangeLV.Groups.Add(group);
-            m_accountGroup.Add(account, group);
-
-            return group;
-        }
-
-        ListViewGroup FindAccountGroup(string account)
-        {
-            if (m_accountGroup.ContainsKey(account))
-            {
-                return m_accountGroup[account];
-            }
-
-            return null;
-        }
-
         public void AddFundChangeEvent(FundEvent eve)
         {
+            m_fundEventDB.AddNewFundEvent(eve);
+
             AddFundChangeEventToListView(eve);
             SaveToAccountCurrentSwingEvents(eve);
-            m_fundEventDB.AddNewFundEvent(eve);
         }
 
-        void AddFundChangeEventToListView(FundEvent eve)
+        bool AddFundChangeEventToListView(FundEvent eve)
         {
-            var group = FindAccountGroup(eve.Account);
-            if (group == null)
-                group = AddFundChangeGroup(eve.Account);
+            if (m_currentEventType == "所有" || eve.Type == m_currentEventType)
+            {
+                ListViewItem row = new ListViewItem();
+                row.Text = (m_fundChangeLV.Items.Count + 1).ToString();
+                row.SubItems.Add(eve.Account);
+                row.SubItems.Add(eve.Type);
+                row.SubItems.Add(eve.Amount.ToString());
+                row.SubItems.Add(eve.Charge.ToString());
+                row.SubItems.Add(eve.DateTime);
+                m_fundChangeLV.Items.Add(row);
 
-            ListViewItem row = new ListViewItem();
+                return true;
+            }
 
-            row.Text = (group.Items.Count + 1).ToString();
-            row.SubItems.Add(eve.Account);
-            row.SubItems.Add(eve.Type);
-            row.SubItems.Add(eve.Amount.ToString());
-            row.SubItems.Add(eve.Charge.ToString());
-            row.SubItems.Add(eve.DateTime);
-
-            group.Items.Add(row);
-            m_fundChangeLV.Items.Add(row);
+            return false;
         }
         #endregion
 
         private void FundChangeHistoryWnd_FormClosing(object sender, FormClosingEventArgs e)
         {
+            /*
             this.Hide();
             e.Cancel = true;
+            */
         }
 
+        private void m_accountTreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            var node = e.Node;
+            if (node.Level == 1)
+            {
+                m_currentAccount = GetAccountName(node);
+                ShowAccountFundEvents();
+            }
+            else if (node.Level == 2)
+            {
+                var accountNode = node.Parent;
+                m_currentAccount = GetAccountName(accountNode);
+
+                m_currentYearMonth = node.Text;
+                ShowAccountFundEvents();
+            }
+        }
+
+        private string GetAccountName(TreeNode node)
+        {
+            int pos = node.Text.IndexOf('(');
+            if (pos == -1)
+                return node.Text;
+
+            return node.Text.Substring(0, pos).Trim();
+        }
+
+        private void ShowAccountFundEvents()
+        {
+            m_tipLB.Text = "共有 0 条记录";
+            m_fundChangeLV.Items.Clear();
+
+            if (!m_events.ContainsKey(m_currentAccount))
+                return;
+
+            var events = m_events[m_currentAccount];
+            if (events == null || events.Count == 0)
+                return;
+
+            int count = 0;
+            foreach (var eve in events)
+            {
+                if (string.IsNullOrEmpty(m_currentYearMonth))
+                {
+                    if (AddFundChangeEventToListView(eve))
+                        count++;
+                }
+                else
+                {
+                    string begin = m_currentYearMonth + "-01 00:00:00";
+                    string end = m_currentYearMonth + "-31 23:59:59";
+
+                    if (begin.CompareTo(eve.DateTime) <= 0 && end.CompareTo(eve.DateTime) >= 0)
+                    {
+                        if (AddFundChangeEventToListView(eve))
+                            count++;
+                    }
+                }
+            }
+
+            m_tipLB.Text = "共有 " + count.ToString() + " 条记录";
+        }
+
+        private void m_eventTypeComb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string type = m_eventTypeComb.SelectedItem.ToString();
+            if (type != m_currentEventType)
+            {
+                m_currentEventType = type;
+                ShowAccountFundEvents();
+            }
+        }
     }
 }

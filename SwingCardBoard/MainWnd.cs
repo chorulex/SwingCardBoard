@@ -14,7 +14,7 @@ namespace SwingCardBoard
     {
         private AccountBillDB m_billDB = new AccountBillDB();
         private AccountDB m_accountBD = new AccountDB();
-        private FundChangeHistoryWnd m_fundEventWnd = null;
+        private HistoryFundEventDB m_fundEventDB = new HistoryFundEventDB();
 
         public MainWnd()
         {
@@ -37,8 +37,7 @@ namespace SwingCardBoard
             m_billDB.Load();
             InitAccountView();
 
-            m_fundEventWnd = new FundChangeHistoryWnd();
-            m_fundEventWnd.Hide();
+            LoadAccountSwingEvent();
         }
 
         private void SetCurrentTime()
@@ -53,8 +52,7 @@ namespace SwingCardBoard
             ResetView();
 
             // history
-            m_billDB.Clean();
-            m_fundEventWnd.Clean();
+            m_billDB.Clear();
         }
 
         public void RemoveAccount(string account)
@@ -310,6 +308,32 @@ namespace SwingCardBoard
         }
         # endregion
 
+        #region fund events
+        /// <summary>
+        /// 加载当期账户刷卡明细
+        /// </summary>
+        void LoadAccountSwingEvent()
+        {
+            var m_events = m_fundEventDB.Load(AccountBook.GetInstance().GetAllAccountName());
+            foreach (var accountItem in m_events)
+            {
+                var accountName = accountItem.Key;
+                var account = BillBook.GetInstance().Find(accountName);
+                if (account == null)
+                    continue;
+
+                var events = accountItem.Value;
+                foreach (var eve in events)
+                {
+                    if (eve.Type == "刷卡" && eve.DateTime.CompareTo(Utility.FormatDateString(account.LastBillEnd)) >= 0)
+                    {
+                        account.SwingEvents.Add(eve);
+                    }
+                }
+            }
+        }
+        #endregion
+
         # region wnd event
         // 记录一笔刷卡记录
         private void takeNoteBtn_Click(object sender, EventArgs e)
@@ -325,7 +349,7 @@ namespace SwingCardBoard
                 bill.LastDateTime = dt;
                 UpdateAccountBillView(bill);
 
-                m_fundEventWnd.AddFundChangeEvent(new FundEvent(accountName, eventWnd.Amount, eventWnd.Charge, "刷卡", dt));
+                m_fundEventDB.AddNewFundEvent(new FundEvent(accountName, eventWnd.Amount, eventWnd.Charge, "刷卡", dt));
             }
         }
 
@@ -342,7 +366,7 @@ namespace SwingCardBoard
                 bill.AddRepay(eventWnd.Amount);
 
                 UpdateAccountBillView(bill);
-                m_fundEventWnd.AddFundChangeEvent(new FundEvent(accountName, eventWnd.Amount, 0, "还款", dt));
+                m_fundEventDB.AddNewFundEvent(new FundEvent(accountName, eventWnd.Amount, 0, "还款", dt));
             }
         }
 
@@ -354,7 +378,8 @@ namespace SwingCardBoard
 
         private void 资金变动历史ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            m_fundEventWnd.Show();
+            FundChangeHistoryWnd historyWnd = new FundChangeHistoryWnd();
+            historyWnd.ShowDialog();
         }
 
         private void 设置当期账单ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -364,7 +389,7 @@ namespace SwingCardBoard
             {
                 var bill = wnd.Bill;
                 UpdateAccountBillView(bill.Account.Name);
-                m_fundEventWnd.AddFundChangeEvent(new FundEvent(bill.Account.Name, bill.BillAmount, "账单"));
+                m_fundEventDB.AddNewFundEvent(new FundEvent(bill.Account.Name, bill.BillAmount, "账单"));
             }
         }
 

@@ -68,12 +68,71 @@ namespace SwingCardBoard
         }
     }
 
-    // 存储到csv
     class HistoryFundEventDB
     {
-        readonly string m_fileName = @"data\fund_change_history.csv";
+        private Dictionary<string, AccountFundEventDB> m_accounts = new Dictionary<string, AccountFundEventDB>();
 
-        public void Clean()
+        public void Clear()
+        {
+            foreach (var account in m_accounts)
+            {
+                account.Value.Clear();
+            }
+
+            m_accounts.Clear();
+        }
+
+        public Dictionary<string, List<FundEvent>> Load(List<string> accounts)
+        {
+            Dictionary<string, List<FundEvent>> res = new Dictionary<string, List<FundEvent>>();
+
+            if (accounts != null && accounts.Count > 0)
+            {
+                foreach (string account in accounts)
+                {
+                    AccountFundEventDB db = AddNewAccount(account);
+                    res.Add(account, db.Load());
+                }
+            }
+
+            return res;
+        }
+
+        private AccountFundEventDB AddNewAccount(string account)
+        {
+            AccountFundEventDB db = new AccountFundEventDB();
+            db.Account = account;
+            m_accounts.Add(account, db);
+
+            return db;
+        }
+
+        public void AddNewFundEvent(FundEvent eve)
+        {
+            if (!m_accounts.ContainsKey(eve.Account))
+            {
+                AddNewAccount(eve.Account);
+            }
+
+            m_accounts[eve.Account].AddNewFundEvent(eve);
+        }
+    }
+
+    // 存储到csv
+    class AccountFundEventDB
+    {
+        private string m_fileName = null;
+        public string Account
+        {
+            set { SetFileName(value); }
+        }
+
+        private void SetFileName(string account)
+        {
+            m_fileName = @"data\" +account+ "_fund_change_history.csv";
+        }
+
+        public void Clear()
         {
             if (File.Exists(m_fileName))
                 File.Delete(m_fileName);

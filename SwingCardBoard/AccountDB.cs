@@ -11,7 +11,7 @@ namespace SwingCardBoard
     {
           readonly string m_fileName = @"data\accounts.csv";
 
-        public void Clean()
+        public void Clear()
         {
             if (File.Exists(m_fileName))
                 File.Delete(m_fileName);
@@ -104,7 +104,7 @@ namespace SwingCardBoard
     {
         readonly string m_fileName = @"data\account_current_bill.csv";
 
-        public void Clean()
+        public void Clear()
         {
             if (File.Exists(m_fileName))
                 File.Delete(m_fileName);
