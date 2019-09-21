@@ -175,22 +175,27 @@ namespace SwingCardBoard
         {
             bool exist = File.Exists(m_fileName);
 
-            StreamWriter writer = new StreamWriter(m_fileName);
+            StreamWriter writer = null;
 
             if (!exist)
             {
+                writer = new StreamWriter(m_fileName);
                 writer.Write("账号名称,信用额度,账单起始日期,账单截止日期,可用额度,账单金额,已还金额,未还金额,刷卡合计,上次设置账单日期时间,最后操作日期时间,刷卡手续费");
                 writer.Write("\r\n");
                 writer.Flush();
+            }
+            else
+            {
+                writer = new StreamWriter(m_fileName,true);
             }
 
             writer.Write(bill.Account.Name);
             WriteSpliter(writer);
             writer.Write(bill.Account.CreditAmount);
             WriteSpliter(writer);
-            writer.Write(bill.LastBillStart);
+            writer.Write(Utility.FormatDateString(bill.LastBillStart));
             WriteSpliter(writer);
-            writer.Write(bill.LastBillEnd);
+            writer.Write(Utility.FormatDateString(bill.LastBillEnd));
             WriteSpliter(writer);
             writer.Write(bill.AvaliableAmount);
             WriteSpliter(writer);

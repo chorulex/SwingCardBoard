@@ -174,6 +174,11 @@ namespace SwingCardBoard
             return m_acounts.Values.ToList();
         }
 
+        public void Clear()
+        {
+            m_acounts.Clear();
+        }
+
         public List<string> GetAllAccountName()
         {
             List<string> list = null;
@@ -248,7 +253,7 @@ namespace SwingCardBoard
             set { m_total = value; }
         }
 
-        public void RemoveAll()
+        public void Clear()
         {
             m_bills.Clear();
             UpdateTotal();

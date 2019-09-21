@@ -47,12 +47,20 @@ namespace SwingCardBoard
             this.m_dateLblabel1.Text = currentDate.Year + "年" + currentDate.Month + "月";
         }
 
-        public void Reset()
+        public void Clear()
         {
-            ResetView();
-
             // history
             m_billDB.Clear();
+            m_accountBD.Clear();
+            m_fundEventDB.Clear();
+            var historyDB = new HistoryBillDB();
+            historyDB.Clear();
+
+            // cache
+            AccountBook.GetInstance().Clear();
+            BillBook.GetInstance().Clear();
+
+            ResetView();
         }
 
         public void RemoveAccount(string account)

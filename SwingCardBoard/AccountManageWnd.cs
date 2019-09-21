@@ -86,10 +86,8 @@ namespace SwingCardBoard
 
         private void CleanAccounts()
         {
-            BillBook.GetInstance().RemoveAll();
-
             m_accountListDGV.Rows.Clear();
-            m_mainwnd.Reset();
+            m_mainwnd.Clear();
         }
 
         private void m_accountListDGV_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)

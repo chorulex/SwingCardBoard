@@ -117,6 +117,7 @@ namespace SwingCardBoard
         {
             var account = AccountBook.GetInstance().GetAll()[selectedIndex];
             m_cardNumberTxt.Text = account.Number;
+            m_creditAmountTxt.Text = account.CreditAmount.ToString();
             InitBillDruction(account.Name);
         }
 
@@ -134,6 +135,17 @@ namespace SwingCardBoard
         {
             m_avaliableAmountTxt.Text = Utility.FormatDoubleString(Utility.ConvertToOrigin(m_avaliableAmountTxt.Text.Trim()));
             Utility.SetSelectToLastest(m_avaliableAmountTxt);
+
+            var account = AccountBook.GetInstance().GetAll()[m_accountComb.SelectedIndex];
+            string origin = Utility.ConvertToOrigin(m_avaliableAmountTxt.Text);
+            if (origin.Length == 0)
+            {
+                m_billAmountTxt.Text = "0.0";
+            }
+            else
+            {
+                m_billAmountTxt.Text = Utility.FormatDoubleString(account.CreditAmount - double.Parse(origin));
+            }
         }
 
         private void m_billAmountTxt_TextChanged(object sender, EventArgs e)
@@ -150,6 +162,11 @@ namespace SwingCardBoard
         private void m_billAmountTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
             Utility.CheckTextBoxKeyPress(m_billAmountTxt, sender, e);
+        }
+
+        private void m_creditAmountTxt_TextChanged(object sender, EventArgs e)
+        {
+            m_creditAmountTxt.Text = Utility.FormatDoubleString(Utility.ConvertToOrigin(m_creditAmountTxt.Text.Trim()));
         }
     }
 }
