@@ -28,9 +28,6 @@ namespace SwingCardBoard
 
         private void Init()
         {
-            if (!Directory.Exists(@"data\"))
-                Directory.CreateDirectory(@"data\");
-
             SetCurrentTime();
 
             m_accountBD.Load();
