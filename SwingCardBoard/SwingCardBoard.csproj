@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="AccountBook.cs" />
     <Compile Include="AccountDB.cs" />
+    <Compile Include="BillDB.cs" />
     <Compile Include="FundChangeHistoryWnd.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -82,6 +82,18 @@ namespace SwingCardBoard
             m_accounts.Clear();
         }
 
+        public void Remove(string account)
+        {
+            if (m_accounts.ContainsKey(account))
+            {
+                m_accounts.Remove(account);
+            }
+
+            AccountFundEventDB db = new AccountFundEventDB();
+            db.Account = account;
+            db.Clear();
+        }
+
         public Dictionary<string, List<FundEvent>> Load(List<string> accounts)
         {
             Dictionary<string, List<FundEvent>> res = new Dictionary<string, List<FundEvent>>();

@@ -29,6 +29,22 @@ namespace SwingCardBoard
             InitAccountList();
         }
 
+        private void InitBillDruction(string accountName)
+        {
+            AccountBill bill = BillBook.GetInstance().Find(accountName);
+            if (Bill == null)
+            {
+                var lastBillStart = new DateTime();
+                var lastBillEnd = new DateTime();
+                Utility.CalcLastBillDruction(bill.Account.BillStartDay, ref lastBillStart, ref lastBillEnd);
+                m_billDructionLB.Text = Utility.FormatDateString(lastBillStart) + " - " + Utility.FormatDateString(lastBillEnd);
+            }
+            else
+            {
+                m_billDructionLB.Text="";
+            }
+        }
+
         private void InitAccountList()
         {
             if (AccountBook.GetInstance().Count == 0)
@@ -81,17 +97,12 @@ namespace SwingCardBoard
                 return;
             }
 
-            var bill = BillBook.GetInstance().Find(name);
-            if (bill == null)
-            {
-                MessageBox.Show(this, "账号不存在！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            bill.LastDateTime = Utility.GetCurrentDTString();
-            bill.AvaliableAmount = avaliable;
-            bill.SetBillAmount(billVal);
-            m_bill = bill;
+            // 使用一个新的对象与旧的账单区分开来
+            Account account = AccountBook.GetInstance().Find(name);
+            m_bill = new AccountBill(account);
+            m_bill.LastDateTime = Utility.GetCurrentDTString();
+            m_bill.AvaliableAmount = avaliable;
+            m_bill.SetBillAmount(billVal);
 
             DialogResult = DialogResult.OK;
             this.Close();
@@ -104,7 +115,9 @@ namespace SwingCardBoard
 
         private void SetCardNumber(int selectedIndex)
         {
-            m_cardNumberTxt.Text = BillBook.GetInstance().GetAll()[selectedIndex].Account.Number;
+            var account = AccountBook.GetInstance().GetAll()[selectedIndex];
+            m_cardNumberTxt.Text = account.Number;
+            InitBillDruction(account.Name);
         }
 
         private void m_initLab_Click(object sender, EventArgs e)

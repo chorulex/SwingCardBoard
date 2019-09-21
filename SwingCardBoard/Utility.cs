@@ -15,12 +15,17 @@ namespace SwingCardBoard
         # region common
         public static string GetCurrentDTString()
         {
-            return FormatDateString(DateTime.Now);
+            return FormatDateTimeString(DateTime.Now);
+        }
+
+        public static string FormatDateTimeString(DateTime dt)
+        {
+            return dt.ToLocalTime().ToString();
         }
 
         public static string FormatDateString(DateTime dt)
         {
-            return dt.ToLocalTime().ToString();
+            return dt.ToLocalTime().ToShortDateString();
         }
 
         public static string FormatDoubleString(double origin)

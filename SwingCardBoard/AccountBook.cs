@@ -190,6 +190,13 @@ namespace SwingCardBoard
             return list;
         }
 
+        public void Remove(string name)
+        {
+            if (m_acounts.ContainsKey(name))
+            {
+                m_acounts.Remove(name);
+            }
+        }
 
         public bool Exist(string name)
         {
@@ -232,7 +239,7 @@ namespace SwingCardBoard
             return m_instance;
         }
 
-        private Dictionary<string, AccountBill> m_acounts = new Dictionary<string, AccountBill>();
+        private Dictionary<string, AccountBill> m_bills = new Dictionary<string, AccountBill>();
         // 所有账户总计
         private AccountBill m_total = new AccountBill();
         public AccountBill TotalAccount
@@ -243,32 +250,32 @@ namespace SwingCardBoard
 
         public void RemoveAll()
         {
-            m_acounts.Clear();
+            m_bills.Clear();
             UpdateTotal();
         }
 
         public void Remove(string account)
         {
-            if (m_acounts.ContainsKey(account))
+            if (m_bills.ContainsKey(account))
             {
-                m_acounts.Remove(account);
+                m_bills.Remove(account);
                 UpdateTotal();
             }
         }
 
         public List<AccountBill> GetAll()
         {
-            return m_acounts.Values.ToList();
+            return m_bills.Values.ToList();
         }
 
         public bool Exist(string name)
         {
-            return m_acounts.ContainsKey(name);
+            return m_bills.ContainsKey(name);
         }
 
         public bool Add(AccountBill bill)
         {
-            m_acounts.Add(bill.Account.Name, bill);
+            m_bills.Add(bill.Account.Name, bill);
 
             UpdateTotal(bill);
             return true;
@@ -279,7 +286,12 @@ namespace SwingCardBoard
             if (!Exist(name))
                 return null;
 
-            return m_acounts[name];
+            return m_bills[name];
+        }
+
+        public void ResetBilll(AccountBill bill)
+        {
+            m_bills[bill.Account.Name] = bill;
         }
 
         public void UpdateTotal()

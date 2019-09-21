@@ -61,7 +61,10 @@ namespace SwingCardBoard
             ResetView();
             m_billDB.Remove(account);
 
-            // TODO: 清除资金变动记录
+            AccountBook.GetInstance().Remove(account);
+            m_accountBD.Remove(account);
+
+            m_fundEventDB.Remove(account);
         }
 
         public void UpdateAccount(Account account)
@@ -97,7 +100,7 @@ namespace SwingCardBoard
             row.CreateCells(m_accountStatisticsDgv);
 
             row.Cells[0].Value = bill.Account.Name;
-            row.Cells[1].Value = bill.LastBillStart.ToShortDateString() + " - " + bill.LastBillEnd.ToShortDateString();
+            row.Cells[1].Value = Utility.FormatDateString(bill.LastBillStart) + " - " + Utility.FormatDateString(bill.LastBillEnd);
             row.Cells[2].Value = bill.Account.BillStartDay + "/" + bill.Account.BillExpiredDay;
 
             SetAcountBillAmount(bill, row);
@@ -184,6 +187,7 @@ namespace SwingCardBoard
 
         private void SetAcountBillAmount(AccountBill bill, DataGridViewRow row)
         {
+            row.Cells[1].Value = Utility.FormatDateString(bill.LastBillStart) + " - " + Utility.FormatDateString(bill.LastBillEnd);
             row.Cells[2].Value = bill.Account.BillStartDay + "/" + bill.Account.BillExpiredDay;
             row.Cells[3].Value = Utility.FormatDoubleString(bill.Account.CreditAmount);
             row.Cells[4].Value = Utility.FormatDoubleString(bill.AvaliableAmount);
@@ -210,8 +214,8 @@ namespace SwingCardBoard
 
         private void UpdateAccountBillView(string name)
         {
-            var account = BillBook.GetInstance().Find(name);
-            UpdateAccountBillView(account);
+            var bill = BillBook.GetInstance().Find(name);
+            UpdateAccountBillView(bill);
         }
 
         private void UpdateAccountBillView(Account account)
@@ -325,7 +329,7 @@ namespace SwingCardBoard
                 var events = accountItem.Value;
                 foreach (var eve in events)
                 {
-                    if (eve.Type == "刷卡" && eve.DateTime.CompareTo(Utility.FormatDateString(account.LastBillEnd)) >= 0)
+                    if (eve.Type == "刷卡" && eve.DateTime.CompareTo(Utility.FormatDateTimeString(account.LastBillEnd)) >= 0)
                     {
                         account.SwingEvents.Add(eve);
                     }
@@ -387,9 +391,21 @@ namespace SwingCardBoard
             SetAccountBillWnd wnd = new SetAccountBillWnd(this);
             if (DialogResult.OK == wnd.ShowDialog())
             {
-                var bill = wnd.Bill;
-                UpdateAccountBillView(bill.Account.Name);
-                m_fundEventDB.AddNewFundEvent(new FundEvent(bill.Account.Name, bill.BillAmount, "账单"));
+                var newBill = wnd.Bill;
+                var accountName = newBill.Account.Name;
+
+                var oldBill = BillBook.GetInstance().Find(accountName);
+                // 切换账单日期了，进入当期账单
+                if (oldBill.LastBillEnd <= newBill.LastBillStart)
+                {
+                    HistoryBillDB db = new HistoryBillDB();
+                    db.Add(oldBill);
+                }
+
+                // 覆盖旧账单，保存为当期账单
+                BillBook.GetInstance().ResetBilll(newBill);
+                UpdateAccountBillView(accountName);
+                m_fundEventDB.AddNewFundEvent(new FundEvent(accountName, newBill.BillAmount, "账单"));
             }
         }
 

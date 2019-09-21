@@ -41,6 +41,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.m_avaliableAmountTxt = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.m_billDructionLB = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -65,7 +67,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(30, 142);
+            this.label2.Location = new System.Drawing.Point(30, 157);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 12);
             this.label2.TabIndex = 2;
@@ -73,7 +75,7 @@
             // 
             // m_billAmountTxt
             // 
-            this.m_billAmountTxt.Location = new System.Drawing.Point(101, 137);
+            this.m_billAmountTxt.Location = new System.Drawing.Point(101, 152);
             this.m_billAmountTxt.Name = "m_billAmountTxt";
             this.m_billAmountTxt.Size = new System.Drawing.Size(122, 21);
             this.m_billAmountTxt.TabIndex = 3;
@@ -82,7 +84,7 @@
             // 
             // m_applyBtn
             // 
-            this.m_applyBtn.Location = new System.Drawing.Point(168, 172);
+            this.m_applyBtn.Location = new System.Drawing.Point(168, 194);
             this.m_applyBtn.Name = "m_applyBtn";
             this.m_applyBtn.Size = new System.Drawing.Size(75, 23);
             this.m_applyBtn.TabIndex = 4;
@@ -92,7 +94,7 @@
             // 
             // m_cancelBtn
             // 
-            this.m_cancelBtn.Location = new System.Drawing.Point(262, 172);
+            this.m_cancelBtn.Location = new System.Drawing.Point(262, 194);
             this.m_cancelBtn.Name = "m_cancelBtn";
             this.m_cancelBtn.Size = new System.Drawing.Size(75, 23);
             this.m_cancelBtn.TabIndex = 5;
@@ -112,7 +114,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(229, 142);
+            this.label3.Location = new System.Drawing.Point(229, 157);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 12);
             this.label3.TabIndex = 7;
@@ -138,7 +140,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(30, 105);
+            this.label5.Location = new System.Drawing.Point(30, 127);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(65, 12);
             this.label5.TabIndex = 2;
@@ -146,7 +148,7 @@
             // 
             // m_avaliableAmountTxt
             // 
-            this.m_avaliableAmountTxt.Location = new System.Drawing.Point(101, 102);
+            this.m_avaliableAmountTxt.Location = new System.Drawing.Point(101, 124);
             this.m_avaliableAmountTxt.Name = "m_avaliableAmountTxt";
             this.m_avaliableAmountTxt.Size = new System.Drawing.Size(122, 21);
             this.m_avaliableAmountTxt.TabIndex = 3;
@@ -156,17 +158,38 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(229, 105);
+            this.label6.Location = new System.Drawing.Point(229, 127);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(41, 12);
             this.label6.TabIndex = 7;
             this.label6.Text = "（元）";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(30, 96);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(65, 12);
+            this.label7.TabIndex = 10;
+            this.label7.Text = "账单时间：";
+            // 
+            // m_billDructionLB
+            // 
+            this.m_billDructionLB.AutoSize = true;
+            this.m_billDructionLB.ForeColor = System.Drawing.Color.Red;
+            this.m_billDructionLB.Location = new System.Drawing.Point(101, 96);
+            this.m_billDructionLB.Name = "m_billDructionLB";
+            this.m_billDructionLB.Size = new System.Drawing.Size(125, 12);
+            this.m_billDructionLB.TabIndex = 11;
+            this.m_billDructionLB.Text = "这是上一期的账单时间";
+            // 
             // SetAccountBillWnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(504, 211);
+            this.ClientSize = new System.Drawing.Size(504, 232);
+            this.Controls.Add(this.m_billDructionLB);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.m_cardNumberTxt);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label6);
@@ -206,5 +229,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox m_avaliableAmountTxt;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label m_billDructionLB;
     }
 }
