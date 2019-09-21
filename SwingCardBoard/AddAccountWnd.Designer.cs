@@ -54,8 +54,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.m_rateTxt = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.billExpiredNUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.billStartDayNUD)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -140,6 +140,8 @@
             this.numberTxt.Name = "numberTxt";
             this.numberTxt.Size = new System.Drawing.Size(188, 21);
             this.numberTxt.TabIndex = 2;
+            this.numberTxt.TextChanged += new System.EventHandler(this.numberTxt_TextChanged);
+            this.numberTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.numberTxt_KeyPress);
             // 
             // label9
             // 
@@ -324,6 +326,14 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "账户额度信息";
             // 
+            // m_rateTxt
+            // 
+            this.m_rateTxt.Location = new System.Drawing.Point(102, 73);
+            this.m_rateTxt.Name = "m_rateTxt";
+            this.m_rateTxt.Size = new System.Drawing.Size(146, 21);
+            this.m_rateTxt.TabIndex = 10;
+            this.m_rateTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.m_rateTxt_KeyPress);
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -332,14 +342,6 @@
             this.label5.Size = new System.Drawing.Size(89, 12);
             this.label5.TabIndex = 9;
             this.label5.Text = "刷卡手续费率：";
-            // 
-            // m_rateTxt
-            // 
-            this.m_rateTxt.Location = new System.Drawing.Point(102, 73);
-            this.m_rateTxt.Name = "m_rateTxt";
-            this.m_rateTxt.Size = new System.Drawing.Size(146, 21);
-            this.m_rateTxt.TabIndex = 10;
-            this.m_rateTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.m_rateTxt_KeyPress);
             // 
             // AddAccountWnd
             // 

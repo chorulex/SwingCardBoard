@@ -64,7 +64,7 @@ namespace SwingCardBoard
                 return;
             }
 
-            account.Number = numberTxt.Text.Trim();
+            account.Number = numberTxt.Text.Trim().Replace(" ","");
             account.ExpiredDate = expiredDT.Value.ToShortDateString();
             account.BillStartDay = int.Parse(billStartDayNUD.Value.ToString());
             account.BillExpiredDay = int.Parse(billExpiredNUD.Value.ToString());
@@ -143,6 +143,21 @@ namespace SwingCardBoard
         private void m_rateTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
             Utility.CheckTextBoxKeyPress(creditAmountTxt, sender, e, 4);
+        }
+
+        private void numberTxt_TextChanged(object sender, EventArgs e)
+        {
+            string text = numberTxt.Text.Replace(" ", "");
+            numberTxt.Text = Utility.FormatAccountString(text);
+            Utility.SetSelectToLastest(numberTxt);
+        }
+
+        private void numberTxt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Char.IsDigit(e.KeyChar) && e.KeyChar != '\b')
+            {
+                e.Handled = true;
+            }
         }
     }
 }

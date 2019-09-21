@@ -71,7 +71,7 @@ namespace SwingCardBoard
         private void SetCardNumber(int selectedIndex)
         {
             var bill = BillBook.GetInstance().GetAll()[selectedIndex];
-            m_cardNumTxt.Text = bill.Account.Number;
+            m_cardNumTxt.Text = Utility.FormatAccountString(bill.Account.Number);
             m_rateLb.Text = "刷卡手续费率：" + bill.Account.Rate.ToString();
 
             m_noRepayAmountTxt.Text = Utility.FormatDoubleString(bill.NoRepayAmount);

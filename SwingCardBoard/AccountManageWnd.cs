@@ -43,7 +43,7 @@ namespace SwingCardBoard
             var row = m_accountListDGV.Rows[index];
 
             row.Cells[0].Value = account.Name;
-            row.Cells[1].Value = account.Number;
+            row.Cells[1].Value = Utility.FormatAccountString(account.Number);
             row.Cells[2].Value = account.ExpiredDate;
             row.Cells[3].Value = account.BillStartDay+"/"+account.BillExpiredDay;
             row.Cells[4].Value = account.CreditAmount.ToString();
@@ -121,6 +121,7 @@ namespace SwingCardBoard
                 }
 
                 Account newAccount = addWnd.NewAccount;
+                m_accountListDGV.Rows[e.RowIndex].Cells[1].Value = Utility.FormatAccountString(account.Number);
                 m_accountListDGV.Rows[e.RowIndex].Cells[2].Value = account.ExpiredDate;
                 m_accountListDGV.Rows[e.RowIndex].Cells[3].Value = account.BillStartDay + "/" + account.BillExpiredDay;
                 m_accountListDGV.Rows[e.RowIndex].Cells[4].Value = account.CreditAmount.ToString();

@@ -116,7 +116,7 @@ namespace SwingCardBoard
         private void SetCardNumber(int selectedIndex)
         {
             var account = AccountBook.GetInstance().GetAll()[selectedIndex];
-            m_cardNumberTxt.Text = account.Number;
+            m_cardNumberTxt.Text = Utility.FormatAccountString(account.Number);
             m_creditAmountTxt.Text = account.CreditAmount.ToString();
             InitBillDruction(account.Name);
         }

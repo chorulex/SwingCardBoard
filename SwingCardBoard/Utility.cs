@@ -111,6 +111,28 @@ namespace SwingCardBoard
         }
 
         /// <summary>
+        /// 格式化账号文本
+        /// </summary>
+        /// <param name="precision"></param>
+        public static string FormatAccountString(string origin)
+        {
+            if (origin.Length <= 4)
+                return origin;
+
+            string res = (string)origin.Clone();
+
+            int times = 0;
+            string tmpOrigin = (string)res.Clone();
+            while ((times + 1) * 4 < tmpOrigin.Length)
+            {
+                res = res.Insert((times + 1) * 4 + times, " ");
+                times++;
+            }
+
+            return res;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="precision">小数点后位数</param>
